@@ -1,14 +1,16 @@
 #!/bin/bash
+#
 
-echo "Create maximo.properties"
+
+echo "Create maximo-pae.properties"
 MAXIMO_DIR=/opt/IBM/SMP/maximo/applications/maximo
-MAXIMO_PROPERTIES=${MAXIMO_DIR}/properties/maximo.properties
+MAXIMO_INPUT_PROPERTIES=/resources/maximo-input.properties
 MAXIMO_DEPLOY=/opt/IBM/SMP/maximo/deployment
 
 mkdir -p ${MAXIMO_DIR}/properties
 mkdir -p ${MAXIMO_DEPLOY}
 
-cat > ${MAXIMO_PROPERTIES} <<EOF
+cat > ${MAXIMO_INPUT_PROPERTIES} <<EOF
 #************************************************************************************************
 #** Maximo Configuration Parameters
 #************************************************************************************************
@@ -43,7 +45,7 @@ EOF
 
 if [ "${MX_DB_VENDOR}" = "Oracle" ] ; then
 
-  cat >> ${MAXIMO_PROPERTIES} <<EOF
+  cat >> ${MAXIMO_INPUT_PROPERTIES} <<EOF
 
 #************************************************************************************************
 #** Database Configuration Parameters
@@ -57,10 +59,9 @@ Database.Oracle.ServerHostName=${MX_DB_HOSTNAME}
 Database.Oracle.ServerPort=${MX_DB_PORT}
 Database.Oracle.InstanceName=${MX_DB_NAME}
 EOF
-
-  #Database.Oracle.DataTablespaceName=${DB_TABLE_SPACE}
-  #Database.Oracle.TempTablespaceName=${DB_TEMP_SPACE}
-  #Database.Oracle.IndexTablespaceName=${DB_INDEX_SPACE}
+#Database.Oracle.DataTablespaceName=${DB_TABLE_SPACE}
+#Database.Oracle.TempTablespaceName=${DB_TEMP_SPACE}
+#Database.Oracle.IndexTablespaceName=${DB_INDEX_SPACE}
 
 
   # Update JDBC Driver     
@@ -77,7 +78,7 @@ fi
 if [ "${MX_DB_VENDOR}" = "DB2" ]
 then
 
-  cat >> ${MAXIMO_PROPERTIES} <<EOF
+  cat >> ${MAXIMO_INPUT_PROPERTIES} <<EOF
 
 #************************************************************************************************
 #** Database Configuration Parameters
@@ -100,8 +101,10 @@ EOF
 fi
 
 # Run Configuration Tool
-#/opt/IBM/SMP/ConfigTool/scripts/reconfigurePae.sh -action deployConfiguration \
-#    -inputfile ${MAXIMO_PROPERTIES} -automatej2eeconfig ${DEMO_DATA}
+# https://www.ibm.com/docs/en/mam/7.6.1.2?topic=configuration-command-line-interface-parameters
+/opt/IBM/SMP/ConfigTool/scripts/reconfigurePae.sh -action deployDatabaseConfiguration \
+    -inputfile ${MAXIMO_INPUT_PROPERTIES} 
+
 
 echo "Exploding Custom Classes "
 if [ -f /resources/custom_classes.zip ]; then

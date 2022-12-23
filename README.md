@@ -61,9 +61,49 @@ Version 7.6.1.2 is also available in the repository, just change the 3 to the 2 
 
 ## Build maximo.ear
 
+## Build maximo.ear for a Oracle Database and Weblogic
+
 ```bash
-docker run -it --rm -v /maximo-admwks-docker/maximo-smp/resources:/resources \
+docker run -it --rm \
+  -v "$(pwd)":/resources \
+  -e MX_DB_VENDOR=Oracle
+  -e MX_DB_HOSTNAME=orcl.maximo.com
+  -e MX_DB_PORT=1521
+  -e MX_DB_USER=maximo
+  -e MX_DB_PASSWORD=passw0rd
+  -e MX_DB_SCHEMA=maximo
+  -e MX_DB_NAME=maxdb.maximo.com
+  -e MX_APP_VENDOR=weblogic
   maximo-admwks/maximo-smp-fp:7.6.1.3
 ```
-    
+
+## Build maximo.ear for a DB2 Database and WAS
+
+```bash
+docker run -it --rm \
+  -v "$(pwd)":/resources \
+  -e MX_DB_VENDOR=DB2
+  -e MX_DB_HOSTNAME=db2.maximo.com
+  -e MX_DB_PORT=50005
+  -e MX_DB_USER=maximo
+  -e MX_DB_PASSWORD=passw0rd
+  -e MX_DB_NAME=MAXDB76
+  -e MX_APP_VENDOR=was
+  maximo-admwks/maximo-smp-fp:7.6.1.3
+```
+
+## Build maximoXXX.war for a DB Database and Liberty
+
+```bash
+docker run -it --rm \
+  -v "$(pwd)":/resources \
+  -e MX_DB_VENDOR=DB2
+  -e MX_DB_HOSTNAME=db2.maximo.com
+  -e MX_DB_PORT=50005
+  -e MX_DB_USER=maximo
+  -e MX_DB_PASSWORD=passw0rd
+  -e MX_DB_NAME=MAXDB76
+  -e MX_APP_VENDOR=liberty
+  maximo-admwks/maximo-smp-fp:7.6.1.3
+```
 
