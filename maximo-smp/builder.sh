@@ -1,10 +1,9 @@
 #!/bin/bash
 #
 
-
 echo "Create maximo-pae.properties"
 MAXIMO_DIR=/opt/IBM/SMP/maximo/applications/maximo
-MAXIMO_INPUT_PROPERTIES=/resources/maximo-input.properties
+MAXIMO_INPUT_PROPERTIES=/work/maximo-input.properties
 MAXIMO_DEPLOY=/opt/IBM/SMP/maximo/deployment
 
 mkdir -p ${MAXIMO_DIR}/properties
@@ -143,10 +142,11 @@ if [ "${MX_APP_VENDOR}" = "liberty" ]
 then    
     # Compile war files
     echo "Compile maximo.ear file"
-    for type in "war"
+    for type in "-xwar" "api-war" "cron-war" "jmsconsumer-ear" "mea-ear" "report-war" "ui-war"
     do
       echo "Run buildmaximo${type}.sh ..."
       bash "buildmaximo${type}.sh"
       mv ${MAXIMO_DEPLOY}/default/maximo.${type} /resources/.
     done
+
 fi
