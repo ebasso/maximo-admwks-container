@@ -1,6 +1,4 @@
-# maximo-admin-wks-docker
-IBM Maximo Administrative Workstation on Docker Container
-
+# IBM Maximo Administrative Workstation on Docker Container
 
 The IBM Maximo Administrative Workstation is the system where IBM Maximo is installed. It is used to apply new fix packs, feature packs, addons, industry solutions, or any customizations are applied to the installed IBM Maximo code. 
 
@@ -9,13 +7,12 @@ The IBM Maximo Administrative Workstation project as a Docker Container has the 
 
 ## Building IBM Maximo Asset Management V7.6.1.x images by manually
 
-1. Download of IBM Installation Manager, IBM Maximo 7.6.1.0, IBM Maximo 7.6.1.2/3, ... and add to a directory
+1. Download IBM Installation Manager, IBM Maximo 7.6.1.0, IBM Maximo 7.6.1.2/3, ... and add to a directory
 
 * agent.installer.linux.gtk.x86_64_1.9.2.2.zip
 * MAM_7.6.1.0_LINUX64.tar.gz
 * MAMMTFP7612IMRepo.zip
 * MAMMTFP7613IMRepo-signed.zip
-* maximomobile-8.8.zip (pre-req Maximo 7.6.1.2)
 * maximomobile-8.9.zip (pre-req Maximo 7.6.1.3)
 
 2. Create docker network for build, using command:
