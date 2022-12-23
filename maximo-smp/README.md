@@ -1,14 +1,23 @@
-# maximo-admin-wks-docker
-# Build Arguments "--build-arg""
+# Build IBM Maximo 7.6.1.0 image
 
-## url="<http server with installer binaries>"
+Example
+
+```bash
+cd ../maximo-smp
+
+docker build -t maximo-admwks/maximo-smp:7.6.1.0 --build-arg url="http://maximo-images" --network build  .
+```
+
+
+## Arguments:
+
+* **URL to IBM Maximo binaries**
 
 ```bash
  --build-arg url="http://maximo-images"
 ```
 
-## mam_image=<IBM Maximo EAM 7.6.1.0>
-
+* **IBM Maximo EAM 7.6.1.0 binary**
 
 ```bash
  --build-arg mam_image=MAM_7.6.1.0_LINUX64.tar.gz
