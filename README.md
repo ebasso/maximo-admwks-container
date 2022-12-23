@@ -22,7 +22,9 @@ docker network create build
 
 3. Run nginx docker image to be able to download binaries from HTTP.
 ```bash
-docker run --name maximo-images -h maximo-images --network build -v "$(pwd)":/usr/share/nginx/html:ro -d nginx
+docker run --name maximo-images -h maximo-images --network build  \
+  -v "$(pwd)":/usr/share/nginx/html:ro  \
+  -d nginx
 ```
 
 4. Clone this repository.
@@ -39,41 +41,44 @@ cd maximo-admin-wks-docker
 ```bash
 cd ibm-im
 
-docker build -t maximo-admwks/ibm-im:1.9 --build-arg url="http://maximo-images" --network build  .
+docker build -t maximo-admwks/ibm-im:1.9 --build-arg url="http://maximo-images"  \
+  --network build  .
 ```
 
 7. Build IBM Maximo 7.6.1.0 image:
 ```bash
 cd ../maximo-smp
 
-docker build -t maximo-admwks/maximo-smp:7.6.1.0 --build-arg url="http://maximo-images" --network build  .
+docker build -t maximo-admwks/maximo-smp:7.6.1.0 --build-arg url="http://maximo-images"  \
+  --network build  .
 ```
 
 8. Build IBM Maximo FixPack 7.6.1.3:
 ```bash
 cd ../maximo-smp-7613
 
-docker build -t maximo-admwks/maximo-smp-fp:7.6.1.3 --build-arg url="http://maximo-images" --network build  .
+docker build -t maximo-admwks/maximo-smp-fp:7.6.1.3 --build-arg url="http://maximo-images"  \
+  --network build  .
 ```
 
 Version 7.6.1.2 is also available in the repository, just change the 3 to the 2 in the commands above.
 
 
-## Build maximo.ear
+# Build maximo.ear
 
 ## Build maximo.ear for a Oracle Database and Weblogic
 
 ```bash
 docker run -it --rm \
   -v "$(pwd)":/resources \
-  -e MX_DB_VENDOR=Oracle
-  -e MX_DB_HOSTNAME=orcl.maximo.com
-  -e MX_DB_PORT=1521
-  -e MX_DB_USER=maximo
-  -e MX_DB_PASSWORD=passw0rd
-  -e MX_DB_SCHEMA=maximo
-  -e MX_DB_NAME=maxdb.maximo.com
-  -e MX_APP_VENDOR=weblogic
+  -e MX_DB_VENDOR=Oracle \
+  -e MX_DB_HOSTNAME=orcl.maximo.com \
+  -e MX_DB_PORT=1521 \
+  -e MX_DB_USER=maximo \
+  -e MX_DB_PASSWORD=passw0rd \
+  -e MX_DB_SCHEMA=maximo \
+  -e MX_DB_NAME=maxdb.maximo.com \
+  -e MX_APP_VENDOR=weblogic \
   maximo-admwks/maximo-smp-fp:7.6.1.3
 ```
 
@@ -82,28 +87,28 @@ docker run -it --rm \
 ```bash
 docker run -it --rm \
   -v "$(pwd)":/resources \
-  -e MX_DB_VENDOR=DB2
-  -e MX_DB_HOSTNAME=db2.maximo.com
-  -e MX_DB_PORT=50005
-  -e MX_DB_USER=maximo
-  -e MX_DB_PASSWORD=passw0rd
-  -e MX_DB_NAME=MAXDB76
-  -e MX_APP_VENDOR=was
+  -e MX_DB_VENDOR=DB2 \
+  -e MX_DB_HOSTNAME=db2.maximo.com \
+  -e MX_DB_PORT=50005 \
+  -e MX_DB_USER=maximo \
+  -e MX_DB_PASSWORD=passw0rd \
+  -e MX_DB_NAME=MAXDB76 \
+  -e MX_APP_VENDOR=was \
   maximo-admwks/maximo-smp-fp:7.6.1.3
 ```
 
-## Build maximoXXX.war for a DB Database and Liberty
+## Build maximoXXX.war for DB2 and Liberty
 
 ```bash
 docker run -it --rm \
   -v "$(pwd)":/resources \
-  -e MX_DB_VENDOR=DB2
-  -e MX_DB_HOSTNAME=db2.maximo.com
-  -e MX_DB_PORT=50005
-  -e MX_DB_USER=maximo
-  -e MX_DB_PASSWORD=passw0rd
-  -e MX_DB_NAME=MAXDB76
-  -e MX_APP_VENDOR=liberty
+  -e MX_DB_VENDOR=DB2 \
+  -e MX_DB_HOSTNAME=db2.maximo.com \
+  -e MX_DB_PORT=50005 \
+  -e MX_DB_USER=maximo \
+  -e MX_DB_PASSWORD=passw0rd \
+  -e MX_DB_NAME=MAXDB76 \
+  -e MX_APP_VENDOR=liberty \
   maximo-admwks/maximo-smp-fp:7.6.1.3
 ```
 
