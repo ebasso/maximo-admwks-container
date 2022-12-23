@@ -107,3 +107,12 @@ docker run -it --rm \
   maximo-admwks/maximo-smp-fp:7.6.1.3
 ```
 
+This project is heavily based on nishi2go/maximo-liberty-docker - altered for IBM Control Desk to work. 
+
+## Acknowledgments
+
+This project was inspired by the [Docker images for IBM Maximo Asset Management V7.6.1 with Liberty done by Nish2Go](https://github.com/nishi2go/maximo-liberty-docker). Some parts were used from his project. My sincere thanks to Nish2Go.
+
+## License
+
+This project is licensed under Apache 2.0 license.
