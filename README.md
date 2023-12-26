@@ -1,4 +1,4 @@
-# IBM Maximo Administrative Workstation on Docker Container
+# IBM Maximo Administrative Workstation as Container
 
 The IBM Maximo Administrative Workstation is the system where IBM Maximo is installed. It is used to apply new fix packs, feature packs, addons, industry solutions, or any customizations are applied to the installed IBM Maximo code. 
 
