@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi8/ubi:8.9
+FROM registry.access.redhat.com/ubi8/ubi:8.1
 
 ARG url=http://files
 ARG iim_image=agent.installer.linux.gtk.x86_64_1.9.zip
