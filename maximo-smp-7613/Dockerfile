@@ -1,8 +1,9 @@
 FROM maximo-admwks/maximo-smp:7.6.1.0
 
-ARG fp=3
 ARG url=http://files
-ARG mam_fp_image=MAMMTFP761${fp}IMRepo-signed.zip
+#ARG fp=3
+#ARG mam_fp_image=MAMMTFP761${fp}IMRepo-signed.zip
+ARG mam_fp_image=MAMMTFP7613IMRepo-signed.zip
 
 ARG ifix=20230914-0042
 #ARG mam_fp_image=TPAE_7613_IFIX.${ifix}.im.zip
@@ -28,4 +29,6 @@ RUN if [ "$mam_ifix_image" != "default_value" ]; then \
       && /opt/IBM/InstallationManager/eclipse/tools/imcl -log /opt/IBM/mam_ifix_install.log -acceptLicense \
         install com.ibm.tivoli.tpae.base.tpae.main.$ifix -repositories /tmp/mam_ifix_image.zip -installationDirectory /opt/IBM/SMP  \
        && rm -fr /tmp/* ;\
+    else \
+      echo "skipping" ; \
     fi
