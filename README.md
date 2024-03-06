@@ -14,27 +14,33 @@ To create our maximo-admwks-container, we have some temporary stages, before gen
 
 At the end you will be able to remove the images from stages 1, 2, 3 and 4.
 
-## Building IBM Maximo Asset Management V7.6.1.x images by manually
+## Pre-install actions
 
-1. Download IBM Installation Manager, IBM Maximo 7.6.1.0, IBM Maximo 7.6.1.2/3, ... and add to a directory
+1. Install an Nginx in the local machine
+
+```bash
+dnf -y install nginx.x86_64
+```
+2. Enable and Start Nginx
+
+```bash
+systemctl enable nginx
+
+systemctl start nginx
+```
+
+3. Download IBM Installation Manager, IBM Maximo 7.6.1.0, IBM Maximo 7.6.1.2/3, 
 
 * agent.installer.linux.gtk.x86_64_1.9.zip
 * MAM_7.6.1.0_LINUX64.tar.gz
 * MAMMTFP7612IMRepo.zip
 * MAMMTFP7613IMRepo-signed.zip
+* TPAE_7613_IFIX.20230914-0042.im.zip
 * maximomobile-8.9.zip (pre-req Maximo 7.6.1.3)
 
-2. Create docker network for build, using command:
-```bash
-docker network create build
-```
+... and add to a directory **/usr/share/nginx/html**
 
-3. Run nginx docker image to be able to download binaries from HTTP.
-```bash
-docker run --name maximo-images -h maximo-images --network build  \
-  -v "$(pwd)":/usr/share/nginx/html:ro  \
-  -d nginx
-```
+## Building IBM Maximo Asset Management V7.6.1.x images by manually
 
 4. Clone this repository.
 ```bash
@@ -50,24 +56,21 @@ cd maximo-admin-wks-docker
 ```bash
 cd ibm-im
 
-docker build -t maximo-admwks/ibm-im:1.9 --build-arg url="http://maximo-images"  \
-  --network build  .
+docker build -t maximo-admwks/ibm-im:1.9 --build-arg url="http://<IP_ADDRESS>" .
 ```
 
 7. Build IBM Maximo 7.6.1.0 image:
 ```bash
 cd ../maximo-smp
 
-docker build -t maximo-admwks/maximo-smp:7.6.1.0 --build-arg url="http://maximo-images"  \
-  --network build  .
+docker build -t maximo-admwks/maximo-smp:7.6.1.0 --build-arg url="http://<IP_ADDRESS>"  .
 ```
 
 8. Build IBM Maximo FixPack 7.6.1.3:
 ```bash
 cd ../maximo-smp-7613
 
-docker build -t maximo-admwks/maximo-smp-fp:7.6.1.3 --build-arg url="http://maximo-images"  \
-  --network build  .
+docker build -t maximo-admwks/maximo-smp-fp:7.6.1.3 --build-arg url="http://<IP_ADDRESS>"  .
 ```
 
 Version 7.6.1.2 is also available in the repository, just change the 3 to the 2 in the commands above.
