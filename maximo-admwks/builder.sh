@@ -13,7 +13,6 @@ cat > ${MAXIMO_INPUT_PROPERTIES} <<EOF
 #************************************************************************************************
 #** Maximo Configuration Parameters
 #************************************************************************************************
-
 mxe.adminuserloginid=maxadmin
 mxe.adminPasswd=${MX_MAXADMIN_PASSWORD}
 
@@ -34,7 +33,6 @@ mxe.useAppServerSecurity=0
 #************************************************************************************************
 #** Database user that the server uses to attach to the database server.
 #************************************************************************************************
-
 mxe.db.user=${MX_DB_USER}
 mxe.db.password=${MX_DB_MAXIMO_PASSWORD}
 mxe.db.schemaowner=${MX_DB_SCHEMA}
@@ -49,7 +47,6 @@ if [ "${MX_DB_VENDOR}" = "Oracle" ] ; then
 #************************************************************************************************
 #** Database Configuration Parameters
 #************************************************************************************************
-
 mxe.db.driver=oracle.jdbc.OracleDriver
 mxe.db.url=jdbc:oracle:thin:@${MX_DB_HOSTNAME}:${MX_DB_PORT}/${MX_DB_NAME}
 Database.Vendor=Oracle
@@ -63,7 +60,7 @@ EOF
 #Database.Oracle.IndexTablespaceName=${DB_INDEX_SPACE}
 
 
-  # Update JDBC Driver     
+  # Update JDBC Driver from maven repository
   #wget -q "http://search.maven.org/remotecontent?filepath=com/oracle/database/jdbc/ojdbc8/19.7.0.0/ojdbc8-19.7.0.0.jar" -O ${MAXIMO_DIR}/lib/oraclethin.jar
   if [ -f /resources/oraclethin.jar ]; then
     echo "Update Oracle JDBC Driver"
@@ -82,7 +79,6 @@ then
 #************************************************************************************************
 #** Database Configuration Parameters
 #************************************************************************************************
-
 mxe.db.driver=com.ibm.db2.jcc.DB2Driver
 mxe.db.url=jdbc:db2://${MX_DB_HOSTNAME}:${MX_DB_PORT}/${MX_DB_NAME}
 Database.Vendor=DB2
@@ -96,7 +92,6 @@ EOF
 #Database.DB2.DataTablespaceName=${DB_TABLE_SPACE}
 #Database.DB2.TempTablespaceName=${DB_TEMP_SPACE}
 #Database.DB2.IndexTablespaceName=${DB_INDEX_SPACE}
-
 fi
 
 # Run Configuration Tool

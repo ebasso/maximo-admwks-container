@@ -76,7 +76,8 @@ If you want to apply a ifix to 7.6.1.3, add argument ifix and mam_ifix_image:
 
 ```bash
 podman build -t maximo-admwks/maximo-smp:7.6.1.3 --build-arg url="http://<IP_SERVER>" \
- --build-arg ifix=20230914-0042 --build-arg mam_ifix_image=TPAE_7613_IFIX.20230914-0042.im.zip .
+ --build-arg ifix=20230914-0042 \
+ --build-arg mam_ifix_image=TPAE_7613_IFIX.20230914-0042.im.zip .
 ```
 
 in this case i using TPAE_7613_IFIX.20230914-0042.im.zip (ifix12).
@@ -107,7 +108,9 @@ podman run --entrypoint=/bin/bash -it maximo-admwks/maximo-admwks:1.0
 podman run -it --rm \
   -v "$(pwd)":/resources \
   -e MX_DB_VENDOR=Oracle \
-  -e MX_DB_HOSTNAME=orcl.maximo.com -e MX_DB_PORT=1521 -e MX_DB_USER=maximo -e MX_DB_PASSWORD=passw0rd -e MX_DB_SCHEMA=maximo -e MX_DB_NAME=maxdb.maximo.com \
+  -e MX_DB_HOSTNAME=orcl.maximo.com -e MX_DB_PORT=1521 \
+  -e MX_DB_USER=maximo -e MX_DB_PASSWORD=passw0rd \
+  -e MX_DB_SCHEMA=maximo -e MX_DB_NAME=maxdb.maximo.com \
   -e MX_APP_VENDOR=weblogic \
   maximo-admwks/maximo-admwks:1.0
 ```
@@ -118,7 +121,8 @@ podman run -it --rm \
 podman run -it --rm \
   -v "$(pwd)":/resources \
   -e MX_DB_VENDOR=DB2 \
-  -e MX_DB_HOSTNAME=db2.maximo.com -e MX_DB_PORT=50005 -e MX_DB_USER=maximo -e MX_DB_PASSWORD=passw0rd -e MX_DB_NAME=MAXDB76 \
+  -e MX_DB_HOSTNAME=db2.maximo.com -e MX_DB_PORT=50005 \
+  -e MX_DB_USER=maximo -e MX_DB_PASSWORD=passw0rd -e MX_DB_NAME=MAXDB76 \
   -e MX_APP_VENDOR=was \
   maximo-admwks/maximo-admwks:1.0
 ```
@@ -129,7 +133,8 @@ podman run -it --rm \
 podman run -it --rm \
   -v "$(pwd)":/resources \
   -e MX_DB_VENDOR=DB2 \
-  -e MX_DB_HOSTNAME=db2.maximo.com -e MX_DB_PORT=50005 -e MX_DB_USER=maximo -e MX_DB_PASSWORD=passw0rd -e MX_DB_NAME=MAXDB76 \
+  -e MX_DB_HOSTNAME=db2.maximo.com -e MX_DB_PORT=50005 \
+  -e MX_DB_USER=maximo -e MX_DB_PASSWORD=passw0rd -e MX_DB_NAME=MAXDB76 \
   -e MX_APP_VENDOR=liberty \
   maximo-admwks/maximo-admwks:1.0
 ```
