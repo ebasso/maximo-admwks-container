@@ -7,7 +7,7 @@
 * **URL to IBM Maximo binaries**
 
 ```bash
- --build-arg url="http://maximo-images"
+ --build-arg url="http://<IP_SERVER>"
 ```
 
 * **IBM Maximo EAM 7.6.1.0 binary**

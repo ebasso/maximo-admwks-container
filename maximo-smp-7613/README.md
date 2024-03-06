@@ -5,7 +5,7 @@ Example
 ```bash
 cd ../maximo-smp
 
-docker build -t maximo-admwks/maximo-smp:7.6.1.3 --build-arg url="http://maximo-images" --network build  .
+podman build -t maximo-admwks/maximo-smp:7.6.1.3 --build-arg url="http://<IP_SERVER>"   .
 ```
 
 
@@ -14,7 +14,7 @@ docker build -t maximo-admwks/maximo-smp:7.6.1.3 --build-arg url="http://maximo-
 * **URL to IBM Maximo binaries**
 
 ```bash
- --build-arg url="http://maximo-images"
+ --build-arg url="http://<IP_SERVER>"
 ```
 
 * **IBM Maximo EAM 7.6.1.3 binary**

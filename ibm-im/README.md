@@ -5,7 +5,7 @@ Example
 ```bash
 cd ibm-im
 
-docker build -t maximo-admwks/ibm-im:1.9 --build-arg url="http://maximo-images" --network build  .
+podman build -t maximo-admwks/ibm-im:1.9 --build-arg url="http://<IP_SERVER>"   .
 ```
 
 
@@ -14,12 +14,12 @@ docker build -t maximo-admwks/ibm-im:1.9 --build-arg url="http://maximo-images" 
 * **URL to IBM Maximo binaries**
 
 ```bash
- --build-arg url="http://maximo-images"
+ --build-arg url="http://<IP_SERVER>"
 ```
 
 * **IBM Installation Manager binary**
 
 ```bash
- --build-arg im_image=agent.installer.linux.gtk.x86_64_1.9.2.2.zip
+ --build-arg im_image=agent.installer.linux.gtk.x86_64_1.9.3.zip
 ```
 

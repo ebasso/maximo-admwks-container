@@ -44,12 +44,12 @@ systemctl start nginx
 
 4. Clone this repository.
 ```bash
-git clone https://github.com/ebasso/maximo-admin-wks-docker.git
+git clone https://github.com/ebasso/maximo-admwks-container.git
 ```
 
 5. Move to the directory.
 ```bash
-cd maximo-admin-wks-docker
+cd maximo-admwks-container
 ```
 
 6. Build IBM Installation Manager image:

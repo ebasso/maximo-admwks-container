@@ -1,15 +1,15 @@
-FROM ubuntu:18.04
+FROM registry.access.redhat.com/ubi8/ubi
 
 ARG url=http://files
-ARG iim_image=agent.installer.linux.gtk.x86_64_1.9.2.2.zip
+ARG iim_image=agent.installer.linux.gtk.x86_64_1.9.zip
 
 ENV TEMP /tmp
 WORKDIR /tmp
 
 # Install required packages
-RUN apt update && apt install -y curl wget unzip netcat inetutils-ping gettext-base && rm -rf /var/lib/apt/lists/*
+RUN dnf -y update && dnf -y install curl wget unzip
 
-# Install IBM Installation Manager 1.8.8
+# Install IBM Installation Manager 1.9
 RUN mkdir -p /opt/IBM \
  && wget -q -O iim.zip $url/$iim_image  \
  && unzip iim.zip \

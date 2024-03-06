@@ -1,7 +1,7 @@
 FROM maximo-admwks/maximo-smp-fp:7.6.1.3
 
 ARG fp=8.9
-ARG url=http://images
+ARG url=http://files
 ARG mob_image=maximo-mobile${fp}.zip
 
 ENV TEMP /tmp
