@@ -1,4 +1,4 @@
-FROM FROM maximo-admwks/maximo-smp:7.6.1.3 as source
+FROM maximo-admwks/maximo-smp:7.6.1.3 as source
 
 FROM registry.access.redhat.com/ubi8/ubi:8.9
 
