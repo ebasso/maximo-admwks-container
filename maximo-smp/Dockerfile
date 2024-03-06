@@ -15,4 +15,4 @@ RUN wget -q -O mam76.tar $url/$mam_image \
  && /opt/IBM/InstallationManager/eclipse/tools/imcl -log /opt/IBM/mam_install.log -acceptLicense \
  -input /Launchpad/SilentResponseFiles/Unix/ResponseFile_MAM_Install_Unix.xml \
  && mkdir -p /opt/IBM/SMP/maximo/deployment/default \
- && rm -rf /tmp/*
+ && rm -rf /tmp/* && rm -rf /Launchpad/*
