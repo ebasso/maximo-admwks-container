@@ -73,10 +73,14 @@ cd ../maximo-smp-7613
 podman build -t maximo-admwks/maximo-smp-fp:7.6.1.3 --build-arg url="http://<IP_ADDRESS>"  .
 ```
 
-If you want to apply a ifix to 7.6.1.3, add argument mam_fp_ifix_image:
+If you want to apply a ifix to 7.6.1.3, add argument ifix and mam_ifix_image:
+
 ```bash
- --build-arg mam_fp_ifix_image=TPAE_7613_IFIX.20230914-0042.im.zip
+podman build -t maximo-admwks/maximo-smp:7.6.1.3 --build-arg url="http://<IP_SERVER>" \
+ --build-arg ifix=20230914-0042 --build-arg mam_ifix_image=TPAE_7613_IFIX.20230914-0042.im.zip .
 ```
+
+in this case i using TPAE_7613_IFIX.20230914-0042.im.zip (ifix12).
 
 9. Build IBM Maximo Administrative Workstation:
 
