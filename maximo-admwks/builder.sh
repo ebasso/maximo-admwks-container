@@ -3,7 +3,7 @@
 
 echo "Create maximo-pae.properties"
 MAXIMO_DIR=/opt/IBM/SMP/maximo/applications/maximo
-MAXIMO_INPUT_PROPERTIES=/work/maximo-input.properties
+MAXIMO_INPUT_PROPERTIES=/opt/IBM/maximo-input.properties
 MAXIMO_DEPLOY=/opt/IBM/SMP/maximo/deployment
 
 mkdir -p ${MAXIMO_DIR}/properties
@@ -55,6 +55,7 @@ Database.Oracle.ServerHostName=${MX_DB_HOSTNAME}
 Database.Oracle.ServerPort=${MX_DB_PORT}
 Database.Oracle.InstanceName=${MX_DB_NAME}
 EOF
+
 #Database.Oracle.DataTablespaceName=${DB_TABLE_SPACE}
 #Database.Oracle.TempTablespaceName=${DB_TEMP_SPACE}
 #Database.Oracle.IndexTablespaceName=${DB_INDEX_SPACE}

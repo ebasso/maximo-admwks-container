@@ -27,7 +27,6 @@ ENV MX_DB_URL maxdb.maximo.com
 ENV MX_APP_VENDOR weblogic
 
 ENV TEMP /tmp
-WORKDIR /work
 WORKDIR /opt/IBM/SMP
 
 # Install required packages
