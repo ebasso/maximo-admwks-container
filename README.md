@@ -56,21 +56,21 @@ cd maximo-admin-wks-docker
 ```bash
 cd ibm-im
 
-docker build -t maximo-admwks/ibm-im:1.9 --build-arg url="http://<IP_ADDRESS>" .
+podman build -t maximo-admwks/ibm-im:1.9 --build-arg url="http://<IP_ADDRESS>" .
 ```
 
 7. Build IBM Maximo 7.6.1.0 image:
 ```bash
 cd ../maximo-smp
 
-docker build -t maximo-admwks/maximo-smp:7.6.1.0 --build-arg url="http://<IP_ADDRESS>"  .
+podman build -t maximo-admwks/maximo-smp:7.6.1.0 --build-arg url="http://<IP_ADDRESS>"  .
 ```
 
 8. Build IBM Maximo FixPack 7.6.1.3:
 ```bash
 cd ../maximo-smp-7613
 
-docker build -t maximo-admwks/maximo-smp-fp:7.6.1.3 --build-arg url="http://<IP_ADDRESS>"  .
+podman build -t maximo-admwks/maximo-smp-fp:7.6.1.3 --build-arg url="http://<IP_ADDRESS>"  .
 ```
 
 Version 7.6.1.2 is also available in the repository, just change the 3 to the 2 in the commands above.
@@ -81,7 +81,7 @@ Version 7.6.1.2 is also available in the repository, just change the 3 to the 2 
 ## Build maximo.ear for a Oracle Database and Weblogic
 
 ```bash
-docker run -it --rm \
+podman run -it --rm \
   -v "$(pwd)":/resources \
   -e MX_DB_VENDOR=Oracle \
   -e MX_DB_HOSTNAME=orcl.maximo.com \
@@ -97,7 +97,7 @@ docker run -it --rm \
 ## Build maximo.ear for a DB2 Database and WAS
 
 ```bash
-docker run -it --rm \
+podman run -it --rm \
   -v "$(pwd)":/resources \
   -e MX_DB_VENDOR=DB2 \
   -e MX_DB_HOSTNAME=db2.maximo.com \
@@ -112,7 +112,7 @@ docker run -it --rm \
 ## Build maximoXXX.war for DB2 and Liberty
 
 ```bash
-docker run -it --rm \
+podman run -it --rm \
   -v "$(pwd)":/resources \
   -e MX_DB_VENDOR=DB2 \
   -e MX_DB_HOSTNAME=db2.maximo.com \
