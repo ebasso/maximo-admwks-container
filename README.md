@@ -73,7 +73,35 @@ cd ../maximo-smp-7613
 podman build -t maximo-admwks/maximo-smp-fp:7.6.1.3 --build-arg url="http://<IP_ADDRESS>"  .
 ```
 
-Version 7.6.1.2 is also available in the repository, just change the 3 to the 2 in the commands above.
+If you want to apply a ifix to 7.6.1.3, add argument mam_fp_ifix_image:
+```bash
+ --build-arg mam_fp_ifix_image=TPAE_7613_IFIX.20230914-0042.im.zip
+```
+
+9. Build IBM Maximo Administrative Workstation:
+
+```bash
+cd ../maximo-admwks
+
+podman build -t maximo-admwks/maximo-admwks:1.0  .
+```
+
+
+```bash
+podman images
+```
+
+```
+REPOSITORY                             TAG         IMAGE ID      CREATED         SIZE
+localhost/maximo-admwks/maximo-admwks  1.0         26c0bf98d1ca  26 seconds ago  8.66 GB
+localhost/maximo-admwks/maximo-smp     7.6.1.3     4c3f5408cb08  20 minutes ago  10.2 GB
+localhost/maximo-admwks/maximo-smp     7.6.1.0     73d984ad859d  27 minutes ago  4.94 GB
+localhost/maximo-admwks/ibm-im         1.9         b189c04a98a5  54 minutes ago  545 MB
+```
+
+```bash
+podman rmi b189c04a98a5 73d984ad859d 4c3f5408cb08
+```
 
 
 # Build maximo.ear
@@ -123,6 +151,17 @@ podman run -it --rm \
   -e MX_APP_VENDOR=liberty \
   maximo-admwks/maximo-smp-fp:7.6.1.3
 ```
+
+## Deprecated
+
+Build IBM Maximo FixPack 7.6.1.3:
+
+```bash
+cd ../maximo-smp-7612
+
+podman build -t maximo-admwks/maximo-smp-fp:7.6.1.2 --build-arg url="http://<IP_ADDRESS>"  .
+```
+
 
 ## Acknowledgments
 

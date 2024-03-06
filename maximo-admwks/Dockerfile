@@ -2,8 +2,7 @@ FROM maximo-admwks/maximo-smp:7.6.1.3 as source
 
 FROM registry.access.redhat.com/ubi8/ubi:8.9
 
-ARG url=http://images
-ARG mam_image=MAM_7.6.1.0_LINUX64.tar.gz
+ARG url=http://files
 
 ENV MX_MAXADMIN_PASSWORD passw0rd
 ENV MX_MAXREG_PASSWORD passw0rd
@@ -28,10 +27,10 @@ ENV MX_APP_VENDOR weblogic
 
 ENV TEMP /tmp
 WORKDIR /work
-WORKDIR /opt/IBM
+WORKDIR /opt/IBM/SMP
 
 # Copy the /opt/IBM directory from the source image
-COPY --from=source /opt/IBM /opt/IBM
+COPY --from=source /opt/IBM/SMP /opt/IBM/SMP
 
 COPY builder.sh /opt/IBM
 RUN chmod +x /opt/IBM/builder.sh

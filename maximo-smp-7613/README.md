@@ -23,3 +23,8 @@ podman build -t maximo-admwks/maximo-smp:7.6.1.3 --build-arg url="http://<IP_SER
  --build-arg mam_image=MAMMTFP7613IMRepo-signed.zip
 ```
 
+* **IBM Maximo EAM 7.6.1.3 ifix binary**
+
+```bash
+ --build-arg mam_fp_ifix_image=TPAE_7613_IFIX.20230914-0042.im.zip
+```
