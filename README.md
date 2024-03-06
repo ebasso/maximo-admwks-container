@@ -91,10 +91,16 @@ podman build -t maximo-admwks/maximo-admwks:1.0  .
 ```
 
 
+
+# Remove stage imagages
+
+After your finish to create your images, you can delete stage images
+
 ```bash
 podman images
 ```
 
+the output is
 ```
 REPOSITORY                             TAG         IMAGE ID      CREATED         SIZE
 localhost/maximo-admwks/maximo-admwks  1.0         26c0bf98d1ca  26 seconds ago  8.66 GB
@@ -102,6 +108,8 @@ localhost/maximo-admwks/maximo-smp     7.6.1.3     4c3f5408cb08  20 minutes ago 
 localhost/maximo-admwks/maximo-smp     7.6.1.0     73d984ad859d  27 minutes ago  4.94 GB
 localhost/maximo-admwks/ibm-im         1.9         b189c04a98a5  54 minutes ago  545 MB
 ```
+
+Delete stage images
 
 ```bash
 podman rmi b189c04a98a5 73d984ad859d 4c3f5408cb08
