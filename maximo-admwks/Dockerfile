@@ -29,6 +29,9 @@ ENV TEMP /tmp
 WORKDIR /work
 WORKDIR /opt/IBM/SMP
 
+# Install required packages
+RUN dnf -y install curl wget unzip git && dnf clean all
+
 # Copy the /opt/IBM directory from the source image
 COPY --from=source /opt/IBM/SMP /opt/IBM/SMP
 

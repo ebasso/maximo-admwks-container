@@ -101,8 +101,7 @@ fi
 
 # Run Configuration Tool
 # https://www.ibm.com/docs/en/mam/7.6.1.2?topic=configuration-command-line-interface-parameters
-/opt/IBM/SMP/ConfigTool/scripts/reconfigurePae.sh -action deployDatabaseConfiguration \
-    -inputfile ${MAXIMO_INPUT_PROPERTIES} 
+/opt/IBM/SMP/ConfigTool/scripts/reconfigurePae.sh -action deployDatabaseConfiguration -inputfile ${MAXIMO_INPUT_PROPERTIES} 
 
 
 echo "Exploding Custom Classes "
@@ -114,39 +113,30 @@ fi
 
 cd ${MAXIMO_DEPLOY}
 
-if [ "${MX_APP_VENDOR}" = "weblogic" ]
-then    
-    # Compile war files
-    echo "Compile maximo.ear file"
-    for type in "ear"
-    do
-      echo "Run buildmaximo${type}.sh ..."
-      bash "buildmaximo${type}.sh"
-      mv ${MAXIMO_DEPLOY}/default/maximo.${type} /resources/.
-    done
-fi
-
-if [ "${MX_APP_VENDOR}" = "was" ]
-then    
-    # Compile war files
-    echo "Compile maximo.ear file"
-    for type in "was"
-    do
-      echo "Run buildmaximo${type}.sh ..."
-      bash "buildmaximo${type}.sh"
-      mv ${MAXIMO_DEPLOY}/default/maximo.${type} /resources/.
-    done
-fi
-
-if [ "${MX_APP_VENDOR}" = "liberty" ]
-then    
-    # Compile war files
-    echo "Compile maximo.ear file"
+if [ "${MX_APP_VENDOR}" = "was" ] ; then 
+    echo "Compile maximo.ear file for WebSphere"
+    echo "Run buildmaximoearwas8.sh ..."
+    bash "buildmaximoearwas8.sh"
+    mv ${MAXIMO_DEPLOY}/default/maximo.ear /resources/.
+elif [ "${MX_APP_VENDOR}" = "liberty" ] ; then    
+    echo "Compile maximo.ear file for Liberty"
     for type in "-xwar" "api-war" "cron-war" "jmsconsumer-ear" "mea-ear" "report-war" "ui-war"
     do
       echo "Run buildmaximo${type}.sh ..."
       bash "buildmaximo${type}.sh"
       mv ${MAXIMO_DEPLOY}/default/maximo.${type} /resources/.
     done
-
+elif [ "${MX_APP_VENDOR}" = "weblogic" ] ; then    
+    echo "Compile maximo.ear file for Weblogic"
+    echo "Run buildmaximoear.sh ..."
+    bash "buildmaximoear.sh"
+    mv ${MAXIMO_DEPLOY}/default/maximo.ear /resources/.
+else 
+    echo "Compile maximo.ear file"
+    echo "Run buildmaximoear.sh ..."
+    bash "buildmaximoear.sh"
+    mv ${MAXIMO_DEPLOY}/default/maximo.ear /resources/.
 fi
+
+
+

@@ -8,9 +8,8 @@ To create our maximo-admwks-container, we have some temporary stages, before gen
 
 1) In the first stage, we install IBM Installation Manager
 2) In the second stage, we install IBM Maximo EAM 7.6.1.0, using the previous image "maximo-admwks/ibm-im:1.9"
-3) In the third stage, we apply the 7.6.1.3 fix, using the previous image "maximo-admwks/maximo-smp:7.6.1.0"
-4) (Optional) at this stage we apply some iFix, in my case iFix 7.6.1.3 ifix 12, using the previous image "maximo-admwks/maximo-smp:7.6.1.3"
-5) In order to reduce the size of the image, we created the maximo-admwks-container by copying only the /opt/IBM/SMP directory from the previous image.
+3) In the third stage, we apply the 7.6.1.3 fix, using the previous image "maximo-admwks/maximo-smp:7.6.1.0" .(Optional) at this stage we can apply some iFix, in my case iFix 7.6.1.3 ifix 12
+4) In order to reduce the size of the image, we created the maximo-admwks-container by copying only the /opt/IBM/SMP directory from the previous image.
 
 At the end you will be able to remove the images from stages 1, 2, 3 and 4.
 
@@ -91,8 +90,51 @@ podman build -t maximo-admwks/maximo-admwks:1.0  .
 ```
 
 
+# Access to Maximo Administrative Workstation as Container
 
-# Remove stage imagages
+You can ignore script to build maximo.ear and access the container, using the following command:
+
+```bash
+podman run --entrypoint=/bin/bash -it maximo-admwks/maximo-admwks:1.0
+```
+
+
+# Build maximo.ear
+
+## Build maximo.ear for a Oracle Database and Weblogic
+
+```bash
+podman run -it --rm \
+  -v "$(pwd)":/resources \
+  -e MX_DB_VENDOR=Oracle \
+  -e MX_DB_HOSTNAME=orcl.maximo.com -e MX_DB_PORT=1521 -e MX_DB_USER=maximo -e MX_DB_PASSWORD=passw0rd -e MX_DB_SCHEMA=maximo -e MX_DB_NAME=maxdb.maximo.com \
+  -e MX_APP_VENDOR=weblogic \
+  maximo-admwks/maximo-admwks:1.0
+```
+
+## Build maximo.ear for a DB2 Database and WAS
+
+```bash
+podman run -it --rm \
+  -v "$(pwd)":/resources \
+  -e MX_DB_VENDOR=DB2 \
+  -e MX_DB_HOSTNAME=db2.maximo.com -e MX_DB_PORT=50005 -e MX_DB_USER=maximo -e MX_DB_PASSWORD=passw0rd -e MX_DB_NAME=MAXDB76 \
+  -e MX_APP_VENDOR=was \
+  maximo-admwks/maximo-admwks:1.0
+```
+
+## Build maximoXXX.war for DB2 and Liberty
+
+```bash
+podman run -it --rm \
+  -v "$(pwd)":/resources \
+  -e MX_DB_VENDOR=DB2 \
+  -e MX_DB_HOSTNAME=db2.maximo.com -e MX_DB_PORT=50005 -e MX_DB_USER=maximo -e MX_DB_PASSWORD=passw0rd -e MX_DB_NAME=MAXDB76 \
+  -e MX_APP_VENDOR=liberty \
+  maximo-admwks/maximo-admwks:1.0
+```
+
+# Remove stage images
 
 After your finish to create your images, you can delete stage images
 
@@ -116,53 +158,6 @@ podman rmi b189c04a98a5 73d984ad859d 4c3f5408cb08
 ```
 
 
-# Build maximo.ear
-
-## Build maximo.ear for a Oracle Database and Weblogic
-
-```bash
-podman run -it --rm \
-  -v "$(pwd)":/resources \
-  -e MX_DB_VENDOR=Oracle \
-  -e MX_DB_HOSTNAME=orcl.maximo.com \
-  -e MX_DB_PORT=1521 \
-  -e MX_DB_USER=maximo \
-  -e MX_DB_PASSWORD=passw0rd \
-  -e MX_DB_SCHEMA=maximo \
-  -e MX_DB_NAME=maxdb.maximo.com \
-  -e MX_APP_VENDOR=weblogic \
-  maximo-admwks/maximo-smp-fp:7.6.1.3
-```
-
-## Build maximo.ear for a DB2 Database and WAS
-
-```bash
-podman run -it --rm \
-  -v "$(pwd)":/resources \
-  -e MX_DB_VENDOR=DB2 \
-  -e MX_DB_HOSTNAME=db2.maximo.com \
-  -e MX_DB_PORT=50005 \
-  -e MX_DB_USER=maximo \
-  -e MX_DB_PASSWORD=passw0rd \
-  -e MX_DB_NAME=MAXDB76 \
-  -e MX_APP_VENDOR=was \
-  maximo-admwks/maximo-smp-fp:7.6.1.3
-```
-
-## Build maximoXXX.war for DB2 and Liberty
-
-```bash
-podman run -it --rm \
-  -v "$(pwd)":/resources \
-  -e MX_DB_VENDOR=DB2 \
-  -e MX_DB_HOSTNAME=db2.maximo.com \
-  -e MX_DB_PORT=50005 \
-  -e MX_DB_USER=maximo \
-  -e MX_DB_PASSWORD=passw0rd \
-  -e MX_DB_NAME=MAXDB76 \
-  -e MX_APP_VENDOR=liberty \
-  maximo-admwks/maximo-smp-fp:7.6.1.3
-```
 
 ## Deprecated
 
