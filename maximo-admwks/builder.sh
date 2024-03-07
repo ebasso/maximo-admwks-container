@@ -288,7 +288,7 @@ function configure_maximo_pae_for_liberty {
 
 function configure_maximo_pae_for_weblogic{
 
-    cat > ${MAXIMO_PAE_PROPERTIES} <<EOF
+    cat >> ${MAXIMO_PAE_PROPERTIES} <<EOF
 mxe.adminuserloginid=maxadmin
 mxe.adminPasswd=${MX_MAXADMIN_PASSWORD}
 mxe.system.reguser=maxreg
@@ -417,6 +417,10 @@ function build_maximo_ear {
 ########################## Main Part of Shell Script ##########################
 mkdir -p ${MAXIMO_DIR}/properties
 mkdir -p ${MAXIMO_DEPLOY}
+
+cat > ${MAXIMO_PAE_PROPERTIES}
+###################################################
+<<EOF
 
 if [ "${MX_DB_VENDOR}" = "DB2" ]; then
     configure_maximo_properties_for_db2
