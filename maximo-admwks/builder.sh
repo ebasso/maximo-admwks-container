@@ -1,16 +1,17 @@
 #!/bin/bash
 #
 
-echo "Create maximo-pae-input.properties"
+echo "Create maximo-pae-*.properties"
 echo "# ------------------------------------------------------"
 MAXIMO_DIR=/opt/IBM/SMP/maximo/applications/maximo
-MAXIMO_INPUT_PROPERTIES=/opt/IBM/maximo-pae-input.properties
+MAXIMO_APP_PROPERTIES=/opt/IBM/maximo-pae-app-input.properties
+MAXIMO_DB_PROPERTIES=/opt/IBM/maximo-pae-db-input.properties
 MAXIMO_DEPLOY=/opt/IBM/SMP/maximo/deployment
 
 mkdir -p ${MAXIMO_DIR}/properties
 mkdir -p ${MAXIMO_DEPLOY}
 
-cat > ${MAXIMO_INPUT_PROPERTIES} <<EOF
+cat > ${MAXIMO_APP_PROPERTIES} <<EOF
 #************************************************************************************************
 #** Maximo Configuration Parameters
 #************************************************************************************************
@@ -43,19 +44,24 @@ EOF
 
 if [ "${MX_DB_VENDOR}" = "Oracle" ] ; then
 
-  cat >> ${MAXIMO_INPUT_PROPERTIES} <<EOF
+  cat > ${MAXIMO_APP_PROPERTIES} <<EOF01
+mxe.db.driver=oracle.jdbc.OracleDriver
+mxe.db.url=jdbc:oracle:thin:@${MX_DB_HOSTNAME}:${MX_DB_PORT}/${MX_DB_NAME}
+Database.Vendor=Oracle
+EOF01
+  
+  cat >> ${MAXIMO_DB_PROPERTIES} <<EOF02
 
 #************************************************************************************************
 #** Database Configuration Parameters
 #************************************************************************************************
-mxe.db.driver=oracle.jdbc.OracleDriver
-mxe.db.url=jdbc:oracle:thin:@${MX_DB_HOSTNAME}:${MX_DB_PORT}/${MX_DB_NAME}
-Database.Vendor=Oracle
+
+
 Database.UserSpecifiedJDBCURL=jdbc:oracle:thin:@${MX_DB_HOSTNAME}:${MX_DB_PORT}/${MX_DB_NAME}
 Database.Oracle.ServerHostName=${MX_DB_HOSTNAME}
 Database.Oracle.ServerPort=${MX_DB_PORT}
 Database.Oracle.InstanceName=${MX_DB_NAME}
-EOF
+EOF02
 
 #Database.Oracle.DataTablespaceName=${DB_TABLE_SPACE}
 #Database.Oracle.TempTablespaceName=${DB_TEMP_SPACE}
@@ -76,27 +82,31 @@ fi
 if [ "${MX_DB_VENDOR}" = "DB2" ]
 then
 
-  cat >> ${MAXIMO_INPUT_PROPERTIES} <<EOF
+  cat > ${MAXIMO_APP_PROPERTIES} <<EOF01
+mxe.db.driver=com.ibm.db2.jcc.DB2Driver
+mxe.db.url=jdbc:db2://${MX_DB_HOSTNAME}:${MX_DB_PORT}/${MX_DB_NAME}
+Database.Vendor=DB2
+EOF01
+  
+  cat >> ${MAXIMO_DB_PROPERTIES} <<EOF02
 
 #************************************************************************************************
 #** Database Configuration Parameters
 #************************************************************************************************
-mxe.db.driver=com.ibm.db2.jcc.DB2Driver
-mxe.db.url=jdbc:db2://${MX_DB_HOSTNAME}:${MX_DB_PORT}/${MX_DB_NAME}
-Database.Vendor=DB2
+
 Database.DB2.DatabaseName=${MX_DB_NAME}
 Database.DB2.ServerHostName=${MX_DB_HOSTNAME}
 Database.DB2.ServerPort=${MX_DB_PORT}
 Database.DB2.Vargraphic=true
 Database.DB2.TextSearchEnabled=false
-EOF
+EOF02
 
 #Database.DB2.DataTablespaceName=${DB_TABLE_SPACE}
 #Database.DB2.TempTablespaceName=${DB_TEMP_SPACE}
 #Database.DB2.IndexTablespaceName=${DB_INDEX_SPACE}
 fi
 
-if [ ! -s "${MAXIMO_INPUT_PROPERTIES}" ]; then
+if [ ! -s "${MAXIMO_DB_PROPERTIES}" ]; then
     echo "Failed to create maximo-pae-input.properties."
     exit 1
 fi
@@ -104,8 +114,7 @@ fi
 echo "# Run Configuration Tool reconfigurePae.sh"
 echo "# ------------------------------------------------------"
 # https://www.ibm.com/docs/en/mam/7.6.1.2?topic=configuration-command-line-interface-parameters
-/opt/IBM/SMP/ConfigTool/scripts/reconfigurePae.sh -action deployDatabaseConfiguration -inputfile ${MAXIMO_INPUT_PROPERTIES} 
-
+/opt/IBM/SMP/ConfigTool/scripts/reconfigurePae.sh -action deployDatabaseConfiguration -inputfile ${MAXIMO_DB_PROPERTIES} 
 RETURN_CODE=$?
 
 # Check if the command failed
