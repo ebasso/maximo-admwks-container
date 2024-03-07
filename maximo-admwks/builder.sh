@@ -126,13 +126,22 @@ fi
 echo "# Run Configuration Tool reconfigurePae.sh"
 echo "# ------------------------------------------------------"
 # https://www.ibm.com/docs/en/mam/7.6.1.2?topic=configuration-command-line-interface-parameters
-/opt/IBM/SMP/ConfigTool/scripts/reconfigurePae.sh -action deployDatabaseConfiguration -inputfile ${MAXIMO_DB_PROPERTIES} 
-RETURN_CODE=$?
+/opt/IBM/SMP/ConfigTool/scripts/reconfigurePae.sh -action deployConfiguration -inputfile ${MAXIMO_PAE_PROPERTIES} 
+RC01=$?
 
 # Check if the command failed
-if [ ${RETURN_CODE} -ne 0 ]; then
-    echo "Command reconfigurePae.sh failed with return code ${RETURN_CODE}. Exiting."
-    exit ${RETURN_CODE}
+if [ ${RC01} -ne 0 ]; then
+    echo "Command reconfigurePae.sh deployConfiguration failed with return code ${RC01}. Exiting."
+    exit ${RC01}
+fi
+
+/opt/IBM/SMP/ConfigTool/scripts/reconfigurePae.sh -action deployDatabaseConfiguration -inputfile ${MAXIMO_DB_PROPERTIES} 
+RC02=$?
+
+# Check if the command failed
+if [ ${RC02} -ne 0 ]; then
+    echo "Command reconfigurePae.sh deployDatabaseConfiguration failed with return code ${RC02}. Exiting."
+    exit ${RC02}
 fi
 
 
