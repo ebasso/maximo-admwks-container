@@ -60,12 +60,11 @@ EOF01
 #************************************************************************************************
 #** Database Configuration Parameters
 #************************************************************************************************
-
-
 Database.UserSpecifiedJDBCURL=jdbc:oracle:thin:@${MX_DB_HOSTNAME}:${MX_DB_PORT}/${MX_DB_NAME}
 Database.Oracle.ServerHostName=${MX_DB_HOSTNAME}
 Database.Oracle.ServerPort=${MX_DB_PORT}
 Database.Oracle.InstanceName=${MX_DB_NAME}
+Database.Oracle.ServiceName=${MX_DB_SERVICENAME}
 EOF02
 
 #Database.Oracle.DataTablespaceName=${DB_TABLE_SPACE}
@@ -90,7 +89,11 @@ then
   cat >> ${MAXIMO_PAE_PROPERTIES} <<EOF01
 mxe.db.driver=com.ibm.db2.jcc.DB2Driver
 mxe.db.url=jdbc:db2://${MX_DB_HOSTNAME}:${MX_DB_PORT}/${MX_DB_NAME}
+
 Database.Vendor=DB2
+Database.DB2.ServerHostName=${MX_DB_HOSTNAME}
+Database.DB2.ServerPort=${MX_DB_PORT}
+Database.DB2.DatabaseName=${MX_DB_NAME}
 EOF01
   
   cat >> ${MAXIMO_DB_PROPERTIES} <<EOF02
@@ -98,10 +101,9 @@ EOF01
 #************************************************************************************************
 #** Database Configuration Parameters
 #************************************************************************************************
-
-Database.DB2.DatabaseName=${MX_DB_NAME}
 Database.DB2.ServerHostName=${MX_DB_HOSTNAME}
 Database.DB2.ServerPort=${MX_DB_PORT}
+Database.DB2.DatabaseName=${MX_DB_NAME}
 Database.DB2.Vargraphic=true
 Database.DB2.TextSearchEnabled=false
 EOF02
