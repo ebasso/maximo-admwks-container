@@ -96,7 +96,7 @@ EOF
 #Database.DB2.IndexTablespaceName=${DB_INDEX_SPACE}
 fi
 
-if [ -s "${MAXIMO_INPUT_PROPERTIES}" ]; then
+if [ ! -s "${MAXIMO_INPUT_PROPERTIES}" ]; then
     echo "Failed to create maximo-pae-input.properties."
     exit 1
 fi
