@@ -36,7 +36,7 @@ mxe.useAppServerSecurity=0
 #** Database user that the server uses to attach to the database server.
 #************************************************************************************************
 mxe.db.user=${MX_DB_USER}
-mxe.db.password=${MX_DB_MAXIMO_PASSWORD}
+mxe.db.password=${MX_DB_PASSWORD}
 mxe.db.schemaowner=${MX_DB_SCHEMA}
 
 EOF
