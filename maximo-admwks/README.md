@@ -1,4 +1,4 @@
-# Build IBM Maximo 7.6.1.0 image
+# Build IBM Maximo Administration Workstation container
 
 Example
 
@@ -29,8 +29,8 @@ podman run -it --rm \
 podman run -it --rm \
   -v "$(pwd)":/resources \
   -e MX_DB_VENDOR=DB2 \
-  -e MX_DB_HOSTNAME=db2.maximo.com -e MX_DB_PORT=50005 \
-  -e MX_DB_USER=maximo -e MX_DB_PASSWORD=passw0rd -e MX_DB_NAME=MAXDB76 \
+  -e MX_DB_HOSTNAME=db2.maximo.com -e MX_DB_PORT=50000 \
+  -e MX_DB_USER=ctginst1 -e MX_DB_PASSWORD=passw0rd -e MX_DB_NAME=maxdb76 \
   -e MX_APP_VENDOR=was \
   maximo-admwks/maximo-admwks:1.0
 ```
