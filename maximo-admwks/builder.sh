@@ -106,12 +106,20 @@ echo "# ------------------------------------------------------"
 # https://www.ibm.com/docs/en/mam/7.6.1.2?topic=configuration-command-line-interface-parameters
 /opt/IBM/SMP/ConfigTool/scripts/reconfigurePae.sh -action deployDatabaseConfiguration -inputfile ${MAXIMO_INPUT_PROPERTIES} 
 
+RETURN_CODE=$?
+
+# Check if the command failed
+if [ ${RETURN_CODE} -ne 0 ]; then
+    echo "Command reconfigurePae.sh failed with return code ${RETURN_CODE}. Exiting."
+    exit ${RETURN_CODE}
+fi
+
 
 echo "# Exploding Custom Classes "
 echo "# ------------------------------------------------------"
 if [ -f /resources/custom_classes.zip ]; then
-        cd /opt/IBM/SMP
-        unzip /resources/custom_classes.zip
+    cd /opt/IBM/SMP
+    unzip /resources/custom_classes.zip
 fi
 
 
