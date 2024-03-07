@@ -8,44 +8,41 @@ cd ../maximo-admwks
 podman build -t maximo-admwks/maximo-admwks:1.0  .
 ```
 
+# Build maximo.ear
 
-## Arguments:
+## Build maximo.ear for a Oracle Database and Weblogic
 
-## Environment Variables:
-
-###  Oracle Database:
-```
- * MX_DB_VENDOR Oracle
- * MX_DB_HOSTNAME orcl.maximo.com
- * MX_DB_PORT 1521
- * MX_DB_USER maximo
- * MX_DB_PASSWORD maximo
- * MX_DB_SCHEMA maximo
- * MX_DB_NAME maxdb.maximo.com
- * MX_DB_URL maxdb.maximo.com
+```bash
+podman run -it --rm \
+  -v "$(pwd)":/resources \
+  -e MX_DB_VENDOR=Oracle \
+  -e MX_DB_HOSTNAME=orcl.maximo.com -e MX_DB_PORT=1521 \
+  -e MX_DB_USER=maximo -e MX_DB_PASSWORD=passw0rd \
+  -e MX_DB_SCHEMA=maximo -e MX_DB_NAME=maxdb.maximo.com \
+  -e MX_APP_VENDOR=weblogic \
+  maximo-admwks/maximo-admwks:1.0
 ```
 
-###  DB2 Database:
+## Build maximo.ear for a DB2 Database and WAS
+
+```bash
+podman run -it --rm \
+  -v "$(pwd)":/resources \
+  -e MX_DB_VENDOR=DB2 \
+  -e MX_DB_HOSTNAME=db2.maximo.com -e MX_DB_PORT=50005 \
+  -e MX_DB_USER=maximo -e MX_DB_PASSWORD=passw0rd -e MX_DB_NAME=MAXDB76 \
+  -e MX_APP_VENDOR=was \
+  maximo-admwks/maximo-admwks:1.0
 ```
-* MX_DB_VENDOR DB2
-* MX_DB_HOSTNAME db2.maximo.com
-* MX_DB_PORT 50005
-* MX_DB_USER maximo
-* MX_DB_PASSWORD maximo
-* MX_DB_NAME MAXDB76
+
+## Build maximoXXX.war for DB2 and Liberty
+
+```bash
+podman run -it --rm \
+  -v "$(pwd)":/resources \
+  -e MX_DB_VENDOR=DB2 \
+  -e MX_DB_HOSTNAME=db2.maximo.com -e MX_DB_PORT=50005 \
+  -e MX_DB_USER=maximo -e MX_DB_PASSWORD=passw0rd -e MX_DB_NAME=MAXDB76 \
+  -e MX_APP_VENDOR=liberty \
+  maximo-admwks/maximo-admwks:1.0
 ```
-
-
-### MX_APP_VENDOR
-
-* MX_APP_VENDOR=weblogic
-
-Build for Oracle Weblogic
-
-* MX_APP_VENDOR=was
-
-Build for IBM WebSphere Application Server
-
-* MX_APP_VENDOR=liberty
-
-Build for IBM Liberty Profile
