@@ -1,9 +1,10 @@
 #!/bin/bash
 #
 
-echo "Create maximo-pae.properties"
+echo "Create maximo-pae-input.properties"
+echo "# ------------------------------------------------------"
 MAXIMO_DIR=/opt/IBM/SMP/maximo/applications/maximo
-MAXIMO_INPUT_PROPERTIES=/opt/IBM/maximo-input.properties
+MAXIMO_INPUT_PROPERTIES=/opt/IBM/maximo-pae-input.properties
 MAXIMO_DEPLOY=/opt/IBM/SMP/maximo/deployment
 
 mkdir -p ${MAXIMO_DIR}/properties
@@ -95,12 +96,19 @@ EOF
 #Database.DB2.IndexTablespaceName=${DB_INDEX_SPACE}
 fi
 
-# Run Configuration Tool
+if [ -s "${MAXIMO_INPUT_PROPERTIES}" ]; then
+    echo "Failed to create maximo-pae-input.properties."
+    exit 1
+fi
+
+echo "# Run Configuration Tool reconfigurePae.sh"
+echo "# ------------------------------------------------------"
 # https://www.ibm.com/docs/en/mam/7.6.1.2?topic=configuration-command-line-interface-parameters
 /opt/IBM/SMP/ConfigTool/scripts/reconfigurePae.sh -action deployDatabaseConfiguration -inputfile ${MAXIMO_INPUT_PROPERTIES} 
 
 
-echo "Exploding Custom Classes "
+echo "# Exploding Custom Classes "
+echo "# ------------------------------------------------------"
 if [ -f /resources/custom_classes.zip ]; then
         cd /opt/IBM/SMP
         unzip /resources/custom_classes.zip
@@ -109,26 +117,25 @@ fi
 
 cd ${MAXIMO_DEPLOY}
 
+echo "# Compiling maximo.ear "
+echo "# ------------------------------------------------------"
 if [ "${MX_APP_VENDOR}" = "was" ] ; then 
-    echo "Compile maximo.ear file for WebSphere"
-    echo "Run buildmaximoearwas8.sh ..."
+    echo "Run buildmaximoearwas8.sh for WebSphere"
     bash "buildmaximoearwas8.sh"
     mv ${MAXIMO_DEPLOY}/default/maximo.ear /resources/.
 elif [ "${MX_APP_VENDOR}" = "liberty" ] ; then    
-    echo "Compile maximo.ear file for Liberty"
     for type in "-xwar" "api-war" "cron-war" "jmsconsumer-ear" "mea-ear" "report-war" "ui-war"
     do
-      echo "Run buildmaximo${type}.sh ..."
+      echo "Run buildmaximo${type}.sh ... for Liberty"
       bash "buildmaximo${type}.sh"
       mv ${MAXIMO_DEPLOY}/default/maximo.${type} /resources/.
     done
 elif [ "${MX_APP_VENDOR}" = "weblogic" ] ; then    
-    echo "Compile maximo.ear file for Weblogic"
-    echo "Run buildmaximoear.sh ..."
+    echo "Run buildmaximoear.sh ... for Weblogic"
     bash "buildmaximoear.sh"
     mv ${MAXIMO_DEPLOY}/default/maximo.ear /resources/.
 else 
-    echo "Compile maximo.ear file"
+    echo "Compile maximo.ear file for Generic"
     echo "Run buildmaximoear.sh ..."
     bash "buildmaximoear.sh"
     mv ${MAXIMO_DEPLOY}/default/maximo.ear /resources/.
