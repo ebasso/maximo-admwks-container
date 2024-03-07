@@ -6,12 +6,12 @@ The IBM Maximo Administrative Workstation project as a Docker/Podman Container h
 
 To create our maximo-admwks-container, we have some temporary stages, before generating the final image, as I describe below:
 
-1) In the first stage, we install IBM Installation Manager
+1) In the first stage, we install IBM Installation Manager 1.9
 2) In the second stage, we install IBM Maximo EAM 7.6.1.0, using the previous image "maximo-admwks/ibm-im:1.9"
-3) In the third stage, we apply the 7.6.1.3 fix, using the previous image "maximo-admwks/maximo-smp:7.6.1.0" .(Optional) at this stage we can apply some iFix, in my case iFix 7.6.1.3 ifix 12
+3) In the third stage, we apply the fix 7.6.1.3, using the previous image "maximo-admwks/maximo-smp:7.6.1.0" .(Optional) at this stage we can apply some iFix, in my case iFix 7.6.1.3 ifix 12
 4) In order to reduce the size of the image, we created the maximo-admwks-container by copying only the /opt/IBM/SMP directory from the previous image.
 
-At the end you will be able to remove the images from stages 1, 2, 3 and 4.
+At the end you will be able to remove the images from stages 1, 2, 3.
 
 ## Pre-install actions
 
@@ -28,11 +28,12 @@ systemctl enable nginx
 systemctl start nginx
 ```
 
-3. Download IBM Installation Manager, IBM Maximo 7.6.1.0, IBM Maximo 7.6.1.2/3, 
+Take note of ip address of your http server, you must replace variable **<IP_ADDRESS>** below
+
+3. Download IBM Installation Manager, IBM Maximo 7.6.1.0, IBM Maximo 7.6.1.3, 
 
 * agent.installer.linux.gtk.x86_64_1.9.zip
 * MAM_7.6.1.0_LINUX64.tar.gz
-* MAMMTFP7612IMRepo.zip
 * MAMMTFP7613IMRepo-signed.zip
 * TPAE_7613_IFIX.20230914-0042.im.zip
 * maximomobile-8.9.zip (pre-req Maximo 7.6.1.3)
