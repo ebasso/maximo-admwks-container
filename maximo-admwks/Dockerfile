@@ -33,7 +33,13 @@ WORKDIR /opt/IBM/SMP
 RUN dnf -y install curl wget unzip git && dnf clean all
 
 # Copy the /opt/IBM directory from the source image
+
 COPY --from=source /opt/IBM/SMP /opt/IBM/SMP
+
+# still need to work without root user
+# -----------------------
+# COPY --chown=1001:0 --from=source /opt/IBM/SMP /opt/IBM/SMP
+# USER 1001  # still need to work without root user
 
 COPY builder.sh /opt/IBM
 RUN chmod +x /opt/IBM/builder.sh
