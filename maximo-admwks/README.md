@@ -3,25 +3,13 @@
 Example
 
 ```bash
-cd ../maximo-smp
+cd ../maximo-admwks
 
-podman build -t maximo-admwks/maximo-smp:7.6.1.0 --build-arg url="http://<IP_SERVER>"   .
+podman build -t maximo-admwks/maximo-admwks:1.0  .
 ```
 
 
 ## Arguments:
-
-* **URL to IBM Maximo binaries**
-
-```bash
- --build-arg url="http://<IP_SERVER>"
-```
-
-* **IBM Maximo EAM 7.6.1.0 binary**
-
-```bash
- --build-arg mam_image=MAM_7.6.1.0_LINUX64.tar.gz
-```
 
 ## Environment Variables:
 
