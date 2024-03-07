@@ -47,7 +47,12 @@ if [ "${MX_DB_VENDOR}" = "Oracle" ] ; then
   cat >> ${MAXIMO_PAE_PROPERTIES} <<EOF01
 mxe.db.driver=oracle.jdbc.OracleDriver
 mxe.db.url=jdbc:oracle:thin:@${MX_DB_HOSTNAME}:${MX_DB_PORT}/${MX_DB_NAME}
+
 Database.Vendor=Oracle
+Database.Oracle.ServerHostName=${MX_DB_HOSTNAME}
+Database.Oracle.ServerPort=${MX_DB_PORT}
+Database.Oracle.InstanceName=${MX_DB_NAME}
+Database.Oracle.ServiceName=${MX_DB_SERVICENAME}
 EOF01
   
   cat >> ${MAXIMO_DB_PROPERTIES} <<EOF02
