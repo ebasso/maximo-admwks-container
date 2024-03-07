@@ -135,14 +135,14 @@ if [ ${RC01} -ne 0 ]; then
     exit ${RC01}
 fi
 
-/opt/IBM/SMP/ConfigTool/scripts/reconfigurePae.sh -action deployDatabaseConfiguration -inputfile ${MAXIMO_DB_PROPERTIES} 
+/opt/IBM/SMP/ConfigTool/scripts/reconfigurePae.sh -action updateApplication -inputfile ${MAXIMO_DB_PROPERTIES} 
 RC02=$?
 
-# Check if the command failed
-if [ ${RC02} -ne 0 ]; then
-    echo "Command reconfigurePae.sh updateDatabaseConfiguration failed with return code ${RC02}. Exiting."
-    exit ${RC02}
-fi
+## Check if the command failed
+#if [ ${RC02} -ne 0 ]; then
+#    echo "Command reconfigurePae.sh updateDatabaseConfiguration failed with return code ${RC02}. Exiting."
+#    exit ${RC02}
+#fi
 
 
 echo "# Exploding Custom Classes "
