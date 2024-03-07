@@ -4,14 +4,14 @@
 echo "Create maximo-pae-*.properties"
 echo "# ------------------------------------------------------"
 MAXIMO_DIR=/opt/IBM/SMP/maximo/applications/maximo
-MAXIMO_APP_PROPERTIES=/opt/IBM/maximo-pae-app-input.properties
+MAXIMO_PAE_PROPERTIES=/opt/IBM/maximo-pae-app-input.properties
 MAXIMO_DB_PROPERTIES=/opt/IBM/maximo-pae-db-input.properties
 MAXIMO_DEPLOY=/opt/IBM/SMP/maximo/deployment
 
 mkdir -p ${MAXIMO_DIR}/properties
 mkdir -p ${MAXIMO_DEPLOY}
 
-cat > ${MAXIMO_APP_PROPERTIES} <<EOF
+cat > ${MAXIMO_PAE_PROPERTIES} <<EOF
 #************************************************************************************************
 #** Maximo Configuration Parameters
 #************************************************************************************************
@@ -44,7 +44,7 @@ EOF
 
 if [ "${MX_DB_VENDOR}" = "Oracle" ] ; then
 
-  cat > ${MAXIMO_APP_PROPERTIES} <<EOF01
+  cat >> ${MAXIMO_PAE_PROPERTIES} <<EOF01
 mxe.db.driver=oracle.jdbc.OracleDriver
 mxe.db.url=jdbc:oracle:thin:@${MX_DB_HOSTNAME}:${MX_DB_PORT}/${MX_DB_NAME}
 Database.Vendor=Oracle
@@ -82,7 +82,7 @@ fi
 if [ "${MX_DB_VENDOR}" = "DB2" ]
 then
 
-  cat > ${MAXIMO_APP_PROPERTIES} <<EOF01
+  cat >> ${MAXIMO_PAE_PROPERTIES} <<EOF01
 mxe.db.driver=com.ibm.db2.jcc.DB2Driver
 mxe.db.url=jdbc:db2://${MX_DB_HOSTNAME}:${MX_DB_PORT}/${MX_DB_NAME}
 Database.Vendor=DB2
@@ -106,8 +106,13 @@ EOF02
 #Database.DB2.IndexTablespaceName=${DB_INDEX_SPACE}
 fi
 
+if [ ! -s "${MAXIMO_PAE_PROPERTIES}" ]; then
+    echo "Failed to create ${MAXIMO_PAE_PROPERTIES}."
+    exit 1
+fi
+
 if [ ! -s "${MAXIMO_DB_PROPERTIES}" ]; then
-    echo "Failed to create maximo-pae-input.properties."
+    echo "Failed to create ${MAXIMO_DB_PROPERTIES}."
     exit 1
 fi
 
