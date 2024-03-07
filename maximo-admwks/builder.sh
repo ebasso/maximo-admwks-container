@@ -3,8 +3,7 @@
 
 MAXIMO_DIR=/opt/IBM/SMP/maximo/applications/maximo
 MAXIMO_PROPERTIES=/opt/IBM/SMP/maximo/applications/maximo/properties/maximo.properties
-MAXIMO_PAE_PROPERTIES=/opt/IBM/pae-input.properties
-MAXIMO_DB_PROPERTIES=/opt/IBM/pae-db-input.properties
+MAXIMO_PAE_PROPERTIES=/opt/IBM/maximo-input.properties
 MAXIMO_DEPLOY=/opt/IBM/SMP/maximo/deployment
 
 
@@ -246,71 +245,16 @@ EOF
 
 }
 
+function configure_maximo_pae_for_was {
 
-function configure_maximo_pae_for_db2 {
-
-  cat > ${MAXIMO_PAE_PROPERTIES} <<EOF
+    cat >> ${MAXIMO_PAE_PROPERTIES} <<EOF
 #************************************************************************************************
 #** Maximo Configuration Parameters
 #************************************************************************************************
-mxe.adminuserloginid=maxadmin
-mxe.adminPasswd=${MX_MAXADMIN_PASSWORD}
-mxe.system.reguser=maxreg
-mxe.system.regpassword=${MX_MAXREG_PASSWORD}
-mxe.int.dfltuser=mxintadm
-maximo.int.dfltuserpassword=${MX_MXINTADM_PASSWORD}
-MADT.NewBaseLang=${MX_BASE_LANG}
-MADT.NewAddLangs=${MX_ADD_LANGS}
-mxe.adminEmail=${MX_ADMIN_EMAIL_ADDRESS}
-mail.smtp.host=${MX_SMTP_SERVER_HOST_NAME}
-mxe.useAppServerSecurity=0
+mxe.db.user=maximo
+mxe.db.password=
+mxe.db.schemaowner=maximo
 
-#************************************************************************************************
-#** Database user that the server uses to attach to the database server.
-#************************************************************************************************
-mxe.db.user=${MX_DB_USER}
-mxe.db.password=${MX_DB_PASSWORD}
-mxe.db.schemaowner=${MX_DB_SCHEMA}
-mxe.db.driver=com.ibm.db2.jcc.DB2Driver
-mxe.db.url=jdbc:db2://${MX_DB_HOSTNAME}:${MX_DB_PORT}/${MX_DB_NAME}
-
-Database.Vendor=DB2
-Database.DB2.ServerHostName=${MX_DB_HOSTNAME}
-Database.DB2.ServerPort=${MX_DB_PORT}
-Database.DB2.DatabaseName=${MX_DB_NAME}
-EOF
-  
-  cat >> ${MAXIMO_DB_PROPERTIES} <<EOF02
-#************************************************************************************************
-#** Database Configuration Parameters
-#************************************************************************************************
-Database.DB2.ServerHostName=${MX_DB_HOSTNAME}
-Database.DB2.ServerPort=${MX_DB_PORT}
-Database.DB2.DatabaseName=${MX_DB_NAME}
-Database.DB2.Vargraphic=true
-Database.DB2.TextSearchEnabled=false
-#Database.DB2.DataTablespaceName=${DB_TABLE_SPACE}
-#Database.DB2.TempTablespaceName=${DB_TEMP_SPACE}
-#Database.DB2.IndexTablespaceName=${DB_INDEX_SPACE}
-EOF02
-
-fi
-
-}
-
-
-function configure_maximo_pae_for_oracle {
-
-  if [ "${MX_DB_SERVICENAME}" != "" ]; then
-    ORACLE_DB_URL=jdbc:oracle:thin:@${MX_DB_HOSTNAME}:${MX_DB_PORT}/${MX_DB_SERVICENAME}
-  else
-    ORACLE_DB_URL=jdbc:oracle:thin:@${MX_DB_HOSTNAME}:${MX_DB_PORT}/${MX_DB_NAME}
-  fi
-
-  cat > ${MAXIMO_PAE_PROPERTIES} <<EOF
-#************************************************************************************************
-#** Maximo Configuration Parameters
-#************************************************************************************************
 mxe.adminuserloginid=maxadmin
 mxe.adminPasswd=${MX_MAXADMIN_PASSWORD}
 mxe.system.reguser=maxreg
@@ -335,23 +279,72 @@ Database.Oracle.ServerPort=${MX_DB_PORT}
 Database.Oracle.InstanceName=${MX_DB_NAME}
 Database.Oracle.ServiceName=${MX_DB_SERVICENAME}
 EOF
+
+}
+
+function configure_maximo_pae_for_liberty {
+
+}
+
+function configure_maximo_pae_for_weblogic{
+
+    cat > ${MAXIMO_PAE_PROPERTIES} <<EOF
+mxe.adminuserloginid=maxadmin
+mxe.adminPasswd=${MX_MAXADMIN_PASSWORD}
+mxe.system.reguser=maxreg
+mxe.system.regpassword=${MX_MAXREG_PASSWORD}
+mxe.int.dfltuser=mxintadm
+mxe.adminEmail=${MX_ADMIN_EMAIL_ADDRESS}
+mxe.useAppServerSecurity=0
+MADT.NewBaseLang=${MX_BASE_LANG}
+MADT.NewAddLangs=${MX_ADD_LANGS}
+mail.smtp.host=${MX_SMTP_SERVER_HOST_NAME}
+WAS.WebServerHostName=
+maximo.int.dfltuserpassword=${MX_MXINTADM_PASSWORD}
+EOF
   
-  cat >> ${MAXIMO_DB_PROPERTIES} <<EOF02
-#************************************************************************************************
-#** Database Configuration Parameters
-#************************************************************************************************
-Database.Oracle.ServerHostName=${MX_DB_HOSTNAME}
-Database.Oracle.ServerPort=${MX_DB_PORT}
-Database.Oracle.InstanceName=${MX_DB_NAME}
-Database.Oracle.ServiceName=${MX_DB_SERVICENAME}
+}
+
+function configure_maximo_pae_for_db2 {
+
+  cat >> ${MAXIMO_PAE_PROPERTIES} <<EOF
+mxe.db.user=${MX_DB_USER}
+mxe.db.password=${MX_DB_PASSWORD}
+mxe.db.schemaowner=${MX_DB_SCHEMA}
+
+Database.DB2.ServerHostName=${MX_DB_HOSTNAME}
+Database.DB2.ServerPort=${MX_DB_PORT}
+Database.DB2.DatabaseName=${MX_DB_NAME}
 Database.DB2.Vargraphic=true
 Database.DB2.TextSearchEnabled=false
 #Database.DB2.DataTablespaceName=${DB_TABLE_SPACE}
 #Database.DB2.TempTablespaceName=${DB_TEMP_SPACE}
 #Database.DB2.IndexTablespaceName=${DB_INDEX_SPACE}
-EOF02
+EOF
 
 fi
+
+}
+
+
+function configure_maximo_pae_for_oracle {
+
+  if [ "${MX_DB_SERVICENAME}" != "" ]; then
+    ORACLE_DB_URL=jdbc:oracle:thin:@${MX_DB_HOSTNAME}:${MX_DB_PORT}/${MX_DB_SERVICENAME}
+  else
+    ORACLE_DB_URL=jdbc:oracle:thin:@${MX_DB_HOSTNAME}:${MX_DB_PORT}/${MX_DB_NAME}
+  fi
+
+  cat >> ${MAXIMO_PAE_PROPERTIES} <<EOF
+mxe.db.user=${MX_DB_USER}
+mxe.db.password=${MX_DB_PASSWORD}
+mxe.db.schemaowner=${MX_DB_SCHEMA}
+
+Database.Oracle.ServerHostName=${MX_DB_HOSTNAME}
+Database.Oracle.ServerPort=${MX_DB_PORT}
+Database.Oracle.InstanceName=${MX_DB_NAME}
+Database.Oracle.ServiceName=${MX_DB_SERVICENAME}
+EOF
 
 }
 
@@ -427,10 +420,28 @@ mkdir -p ${MAXIMO_DEPLOY}
 
 if [ "${MX_DB_VENDOR}" = "DB2" ]; then
     configure_maximo_properties_for_db2
+
+    if [ "${MX_APP_VENDOR}" = "was" ] ; then 
+        configure_maximo_pae_for_was
+    elif [ "${MX_APP_VENDOR}" = "liberty" ] ; then    
+        configure_maximo_pae_for_liberty
+    elif [ "${MX_APP_VENDOR}" = "weblogic" ] ; then    
+        configure_maximo_pae_for_weblogic
+    fi
+    
     configure_maximo_pae_for_db2
 
 elif [ "${MX_DB_VENDOR}" = "Oracle" ]; then
     configure_maximo_properties_for_oracle
+
+    if [ "${MX_APP_VENDOR}" = "was" ] ; then 
+        configure_maximo_pae_for_was
+    elif [ "${MX_APP_VENDOR}" = "liberty" ] ; then    
+        configure_maximo_pae_for_liberty
+    elif [ "${MX_APP_VENDOR}" = "weblogic" ] ; then    
+        configure_maximo_pae_for_weblogic
+    fi
+    
     configure_maximo_pae_for_oracle
 fi
 
