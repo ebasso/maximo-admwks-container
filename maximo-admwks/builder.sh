@@ -140,7 +140,7 @@ RC02=$?
 
 # Check if the command failed
 if [ ${RC02} -ne 0 ]; then
-    echo "Command reconfigurePae.sh deployDatabaseConfiguration failed with return code ${RC02}. Exiting."
+    echo "Command reconfigurePae.sh updateDatabaseConfiguration failed with return code ${RC02}. Exiting."
     exit ${RC02}
 fi
 
