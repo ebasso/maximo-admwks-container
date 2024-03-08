@@ -253,7 +253,7 @@ function reconfigure_pae_change_db_password {
   echo "# Run Configuration Tool reconfigurePae.sh"
   echo "# ------------------------------------------------------"
   # https://www.ibm.com/docs/en/mam/7.6.1.2?topic=configuration-command-line-interface-parameters
-  /opt/IBM/SMP/ConfigTool/scripts/reconfigurePae.sh -action deployConfiguration -inputfile ${MAXIMO_PAE_PROPERTIES} 
+  /opt/IBM/SMP/ConfigTool/scripts/reconfigurePae.sh -action updateApplicationDBLite -inputfile ${MAXIMO_PAE_PROPERTIES} 
   RC01=$?
 
   # Check if the command failed
@@ -262,14 +262,6 @@ function reconfigure_pae_change_db_password {
       exit ${RC01}
   fi
 
-  /opt/IBM/SMP/ConfigTool/scripts/reconfigurePae.sh -action updateApplication -inputfile ${MAXIMO_DB_PROPERTIES} 
-  RC02=$?
-
-  ## Check if the command failed
-  #if [ ${RC02} -ne 0 ]; then
-  #    echo "Command reconfigurePae.sh updateDatabaseConfiguration failed with return code ${RC02}. Exiting."
-  #    exit ${RC02}
-  #fi
 }
 
 function explode_customization_classes {
