@@ -15,7 +15,7 @@ BLD_DB_FORMAT_NULLVALUE=default
 
 function configure_maximo_properties {
 
-  cat > ${MAXIMO_PROPERTIES} <<EOF
+  cat > ${MAXIMO_PROPERTIES} <<EOFMAX
 #************************************************************************************************
 #** Database user that the server uses to attach to the database server.
 #************************************************************************************************
@@ -125,14 +125,14 @@ mxe.db.systemdateformat=${BLD_DB_SYSTEMDATEFORMAT}
 mxe.db.format.nullvalue={BLD_DB_FORMAT_NULLVALUE}
 
 #mxe.crontask.donotrun=ALL
-EOF
+EOFMAX
 
 }
 
 
 function configure_maximo_pae_for_was {
 
-    cat >> ${MAXIMO_PAE_PROPERTIES} <<EOF
+    cat >> ${MAXIMO_PAE_PROPERTIES} <<EOFWAS
 #************************************************************************************************
 #** Maximo Configuration Parameters
 #************************************************************************************************
@@ -163,17 +163,17 @@ Database.Oracle.ServerHostName=${MX_DB_HOSTNAME}
 Database.Oracle.ServerPort=${MX_DB_PORT}
 Database.Oracle.InstanceName=${MX_DB_NAME}
 Database.Oracle.ServiceName=${MX_DB_SERVICENAME}
-EOF
+EOFWAS
 
 }
 
 function configure_maximo_pae_for_liberty {
-
+  echo "test"
 }
 
 function configure_maximo_pae_for_weblogic{
 
-    cat >> ${MAXIMO_PAE_PROPERTIES} <<EOF
+    cat >> ${MAXIMO_PAE_PROPERTIES} <<EOFWL
 mxe.adminuserloginid=maxadmin
 mxe.adminPasswd=${MX_MAXADMIN_PASSWORD}
 mxe.system.reguser=maxreg
@@ -186,13 +186,13 @@ MADT.NewAddLangs=${MX_ADD_LANGS}
 mail.smtp.host=${MX_SMTP_SERVER_HOST_NAME}
 WAS.WebServerHostName=
 maximo.int.dfltuserpassword=${MX_MXINTADM_PASSWORD}
-EOF
+EOFWL
   
 }
 
 function configure_maximo_pae_for_db2 {
 
-  cat >> ${MAXIMO_PAE_PROPERTIES} <<EOF
+  cat >> ${MAXIMO_PAE_PROPERTIES} <<EOFDB2
 mxe.db.user=${MX_DB_USER}
 mxe.db.password=${MX_DB_PASSWORD}
 mxe.db.schemaowner=${MX_DB_SCHEMA}
@@ -202,10 +202,7 @@ Database.DB2.ServerPort=${MX_DB_PORT}
 Database.DB2.DatabaseName=${MX_DB_NAME}
 Database.DB2.Vargraphic=true
 Database.DB2.TextSearchEnabled=false
-#Database.DB2.DataTablespaceName=${DB_TABLE_SPACE}
-#Database.DB2.TempTablespaceName=${DB_TEMP_SPACE}
-#Database.DB2.IndexTablespaceName=${DB_INDEX_SPACE}
-EOF
+EOFDB2
 
 fi
 
@@ -220,7 +217,7 @@ function configure_maximo_pae_for_oracle {
     ORACLE_DB_URL=jdbc:oracle:thin:@${MX_DB_HOSTNAME}:${MX_DB_PORT}:${MX_DB_NAME}
   fi
 
-  cat >> ${MAXIMO_PAE_PROPERTIES} <<EOF
+  cat >> ${MAXIMO_PAE_PROPERTIES} <<EOFORCL
 mxe.db.user=${MX_DB_USER}
 mxe.db.password=${MX_DB_PASSWORD}
 mxe.db.schemaowner=${MX_DB_SCHEMA}
@@ -229,13 +226,13 @@ Database.Oracle.ServerHostName=${MX_DB_HOSTNAME}
 Database.Oracle.ServerPort=${MX_DB_PORT}
 Database.Oracle.InstanceName=${MX_DB_NAME}
 Database.Oracle.ServiceName=${MX_DB_SERVICENAME}
-EOF
+EOFORCL
 
 }
 
 function configure_maximo_pae_for_sqlserver {
 
-  cat >> ${MAXIMO_PAE_PROPERTIES} <<EOF
+  cat >> ${MAXIMO_PAE_PROPERTIES} <<EOFSQL
 mxe.db.user=${MX_DB_USER}
 mxe.db.password=${MX_DB_PASSWORD}
 mxe.db.schemaowner=${MX_DB_SCHEMA}
@@ -243,7 +240,7 @@ mxe.db.schemaowner=${MX_DB_SCHEMA}
 Database.SQL.ServerHostName=${MX_DB_HOSTNAME}
 Database.SQL.ServerPort=${MX_DB_PORT}
 Database.SQL.DatabaseName=${MX_DB_NAME}
-EOF
+EOFSQL
 
 }
 
@@ -309,9 +306,9 @@ function build_maximo_ear {
 mkdir -p ${MAXIMO_DIR}/properties
 mkdir -p ${MAXIMO_DEPLOY}
 
-cat > ${MAXIMO_PAE_PROPERTIES}<<EOF
+cat > ${MAXIMO_PAE_PROPERTIES} <<EOFPAE
 # Maximo PAE Properties
-EOF
+EOFPAE
 
 
 if [ "${MX_DB_VENDOR}" = "DB2" ]; then
