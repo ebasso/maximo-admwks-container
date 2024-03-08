@@ -15,7 +15,7 @@ BLD_DB_FORMAT_NULLVALUE=default
 
 function configure_maximo_properties {
 
-  cat > ${MAXIMO_PROPERTIES} <<EOFMAX
+  cat > ${MAXIMO_PROPERTIES} << EOFMAX
 #************************************************************************************************
 #** Database user that the server uses to attach to the database server.
 #************************************************************************************************
@@ -125,6 +125,7 @@ mxe.db.systemdateformat=${BLD_DB_SYSTEMDATEFORMAT}
 mxe.db.format.nullvalue=${BLD_DB_FORMAT_NULLVALUE}
 
 #mxe.crontask.donotrun=ALL
+
 EOFMAX
 
 }
@@ -132,7 +133,7 @@ EOFMAX
 
 function configure_maximo_pae_for_was {
 
-    cat >> ${MAXIMO_PAE_PROPERTIES} <<EOFWAS
+  cat >> ${MAXIMO_PAE_PROPERTIES} << EOFWAS
 #************************************************************************************************
 #** Maximo Configuration Parameters
 #************************************************************************************************
@@ -152,28 +153,13 @@ mxe.adminEmail=${MX_ADMIN_EMAIL_ADDRESS}
 mail.smtp.host=${MX_SMTP_SERVER_HOST_NAME}
 mxe.useAppServerSecurity=0
 
-#************************************************************************************************
-#** Database user that the server uses to attach to the database server.
-#************************************************************************************************
-mxe.db.driver=oracle.jdbc.OracleDriver
-mxe.db.url=${ORACLE_DB_URL}
-
-Database.Vendor=Oracle
-Database.Oracle.ServerHostName=${MX_DB_HOSTNAME}
-Database.Oracle.ServerPort=${MX_DB_PORT}
-Database.Oracle.InstanceName=${MX_DB_NAME}
-Database.Oracle.ServiceName=${MX_DB_SERVICENAME}
 EOFWAS
 
 }
 
-function configure_maximo_pae_for_liberty {
-  echo "test"
-}
+function configure_maximo_pae_for_weblogic {
 
-function configure_maximo_pae_for_weblogic{
-
-    cat >> ${MAXIMO_PAE_PROPERTIES} <<EOFWL
+  cat >> ${MAXIMO_PAE_PROPERTIES} << EOFWL
 mxe.adminuserloginid=maxadmin
 mxe.adminPasswd=${MX_MAXADMIN_PASSWORD}
 mxe.system.reguser=maxreg
@@ -190,9 +176,31 @@ EOFWL
   
 }
 
+
+function configure_maximo_pae_for_liberty {
+
+  cat >> ${MAXIMO_PAE_PROPERTIES} << EOFLIB
+mxe.adminuserloginid=maxadmin
+mxe.adminPasswd=${MX_MAXADMIN_PASSWORD}
+mxe.system.reguser=maxreg
+mxe.system.regpassword=${MX_MAXREG_PASSWORD}
+mxe.int.dfltuser=mxintadm
+mxe.adminEmail=${MX_ADMIN_EMAIL_ADDRESS}
+mxe.useAppServerSecurity=0
+MADT.NewBaseLang=${MX_BASE_LANG}
+MADT.NewAddLangs=${MX_ADD_LANGS}
+mail.smtp.host=${MX_SMTP_SERVER_HOST_NAME}
+WAS.WebServerHostName=
+maximo.int.dfltuserpassword=${MX_MXINTADM_PASSWORD}
+EOFLIB
+
+}
+
+
+
 function configure_maximo_pae_for_db2 {
 
-  cat >> ${MAXIMO_PAE_PROPERTIES} <<EOFDB2
+  cat >> ${MAXIMO_PAE_PROPERTIES} << EOFDB2
 mxe.db.user=${MX_DB_USER}
 mxe.db.password=${MX_DB_PASSWORD}
 mxe.db.schemaowner=${MX_DB_SCHEMA}
@@ -204,20 +212,12 @@ Database.DB2.Vargraphic=true
 Database.DB2.TextSearchEnabled=false
 EOFDB2
 
-fi
-
 }
 
 
 function configure_maximo_pae_for_oracle {
 
-  if [ "${MX_DB_SERVICENAME}" != "" ]; then
-    ORACLE_DB_URL=jdbc:oracle:thin:@${MX_DB_HOSTNAME}:${MX_DB_PORT}/${MX_DB_SERVICENAME}
-  else
-    ORACLE_DB_URL=jdbc:oracle:thin:@${MX_DB_HOSTNAME}:${MX_DB_PORT}:${MX_DB_NAME}
-  fi
-
-  cat >> ${MAXIMO_PAE_PROPERTIES} <<EOFORCL
+  cat >> ${MAXIMO_PAE_PROPERTIES} << EOFORCL
 mxe.db.user=${MX_DB_USER}
 mxe.db.password=${MX_DB_PASSWORD}
 mxe.db.schemaowner=${MX_DB_SCHEMA}
@@ -232,7 +232,7 @@ EOFORCL
 
 function configure_maximo_pae_for_sqlserver {
 
-  cat >> ${MAXIMO_PAE_PROPERTIES} <<EOFSQL
+  cat >> ${MAXIMO_PAE_PROPERTIES} << EOFSQL
 mxe.db.user=${MX_DB_USER}
 mxe.db.password=${MX_DB_PASSWORD}
 mxe.db.schemaowner=${MX_DB_SCHEMA}
@@ -249,8 +249,10 @@ function reconfigure_pae_change_db_password {
 
   echo "# Run Configuration Tool reconfigurePae.sh"
   echo "# ------------------------------------------------------"
+
   # https://www.ibm.com/docs/en/mam/7.6.1.2?topic=configuration-command-line-interface-parameters
   /opt/IBM/SMP/ConfigTool/scripts/reconfigurePae.sh -action updateApplicationDBLite -inputfile ${MAXIMO_PAE_PROPERTIES} 
+
   RC01=$?
 
   # Check if the command failed
@@ -306,8 +308,8 @@ function build_maximo_ear {
 mkdir -p ${MAXIMO_DIR}/properties
 mkdir -p ${MAXIMO_DEPLOY}
 
-cat > ${MAXIMO_PAE_PROPERTIES} <<EOFPAE
-# Maximo PAE Properties
+cat > ${MAXIMO_PAE_PROPERTIES} << EOFPAE
+# Start Maximo PAE Properties
 EOFPAE
 
 
@@ -382,3 +384,5 @@ explode_customization_classes
 #reconfigure_pae_change_db_password
 
 build_maximo_ear
+
+# End of Script
