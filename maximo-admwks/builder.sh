@@ -122,7 +122,7 @@ mxe.db.systemdateformat=${BLD_DB_SYSTEMDATEFORMAT}
 #************************************************************************************************
 #** The database-specific format of the null value function.
 #************************************************************************************************
-mxe.db.format.nullvalue={BLD_DB_FORMAT_NULLVALUE}
+mxe.db.format.nullvalue=${BLD_DB_FORMAT_NULLVALUE}
 
 #mxe.crontask.donotrun=ALL
 EOFMAX
