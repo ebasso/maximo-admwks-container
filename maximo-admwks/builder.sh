@@ -6,8 +6,14 @@ MAXIMO_PROPERTIES=/opt/IBM/SMP/maximo/applications/maximo/properties/maximo.prop
 MAXIMO_PAE_PROPERTIES=/opt/IBM/maximo-input.properties
 MAXIMO_DEPLOY=/opt/IBM/SMP/maximo/deployment
 
+BLD_DB_SCHEMA=default
+BLD_DB_URL=default
+BLD_DB_DRIVER=default
+BLD_DB_SYSTEMDATEFORMAT=default
+BLD_DB_FORMAT_NULLVALUE=default
 
-function configure_maximo_properties_for_db2 {
+
+function configure_maximo_properties {
 
   cat > ${MAXIMO_PROPERTIES} <<EOF
 #************************************************************************************************
@@ -19,7 +25,7 @@ mxe.db.user=${MX_DB_USER}
 #** Owner of the database schema. Must be dbo for SQLServer and same as mxe.db.user
 #** for Oracle.
 #************************************************************************************************
-mxe.db.schemaowner=${MX_DB_SCHEMA}
+mxe.db.schemaowner=${BLD_DB_SCHEMA}
 
 #************************************************************************************************
 #** Password for the database user name.
@@ -63,12 +69,12 @@ maximo.int.dfltuserpassword=${MX_MXINTADM_PASSWORD}
 #************************************************************************************************
 #** Java class name of the JDBC driver.
 #************************************************************************************************
-mxe.db.driver=com.ibm.db2.jcc.DB2Driver
+mxe.db.driver=${BLD_DB_DRIVER}
 
 #************************************************************************************************
 #** JDBC URL of the database.
 #************************************************************************************************
-mxe.db.url=jdbc:db2://${MX_DB_HOSTNAME}:${MX_DB_PORT}/${MX_DB_NAME}
+mxe.db.url=${BLD_DB_URL}
 
 #************************************************************************************************
 #** Number of database connections to create when the application server is started.
@@ -111,139 +117,18 @@ mxe.db.autocommit=0
 #************************************************************************************************
 #** System date format.
 #************************************************************************************************
-mxe.db.systemdateformat=current timestamp
+mxe.db.systemdateformat=${BLD_DB_SYSTEMDATEFORMAT}
 
 #************************************************************************************************
 #** The database-specific format of the null value function.
 #************************************************************************************************
-mxe.db.format.nullvalue=COALESCE
+mxe.db.format.nullvalue={BLD_DB_FORMAT_NULLVALUE}
 
 #mxe.crontask.donotrun=ALL
 EOF
 
 }
 
-function configure_maximo_properties_for_oracle {
-
-  if [ "${MX_DB_SERVICENAME}" != "" ]; then
-    ORACLE_DB_URL=jdbc:oracle:thin:@${MX_DB_HOSTNAME}:${MX_DB_PORT}/${MX_DB_SERVICENAME}
-  else
-    ORACLE_DB_URL=jdbc:oracle:thin:@${MX_DB_HOSTNAME}:${MX_DB_PORT}/${MX_DB_NAME}
-  fi
-
-  cat > ${MAXIMO_PROPERTIES} <<EOF
-#************************************************************************************************
-#** Database user that the server uses to attach to the database server.
-#************************************************************************************************
-mxe.db.user=${MX_DB_USER}
-
-#************************************************************************************************
-#** Owner of the database schema. Must be dbo for SQLServer and same as mxe.db.user
-#** for Oracle.
-#************************************************************************************************
-mxe.db.schemaowner=${MX_DB_SCHEMA}
-
-#************************************************************************************************
-#** Password for the database user name.
-#************************************************************************************************
-mxe.db.password=${MX_DB_PASSWORD}
-mxe.encrypted=false
-
-#************************************************************************************************
-#** Name to bind the MXServer server object to in the RMI registry.
-#************************************************************************************************
-mxe.name=MAXIMO
-
-#************************************************************************************************
-#** RMI communication port. If set at zero, RMI uses any available port. You can
-#** select another available port number.
-#************************************************************************************************
-mxe.rmi.port=0
-
-#************************************************************************************************
-#** The port number used to bind RMI/JRMP communications. Default is 13400.
-#************************************************************************************************
-mxe.registry.port=13400
-
-#************************************************************************************************
-#** Set to true in production environments, to improve system performance. Set to
-#** false for development work, or for custom applications.
-#************************************************************************************************
-mxe.allowLocalObjects=1
-
-#************************************************************************************************
-#** Defines what the minimum level of database is required for an upgrade. An
-#** example value would be 7100.
-#************************************************************************************************
-maximo.min.required.db.version=7100
-
-#************************************************************************************************
-#** Integration user default password.
-#************************************************************************************************
-maximo.int.dfltuserpassword=${MX_MXINTADM_PASSWORD}
-
-#************************************************************************************************
-#** Java class name of the JDBC driver.
-#************************************************************************************************
-mxe.db.driver=mxe.db.driver=oracle.jdbc.OracleDriver
-
-#************************************************************************************************
-#** JDBC URL of the database.
-#************************************************************************************************
-mxe.db.url=${ORACLE_DB_URL}
-
-#************************************************************************************************
-#** Number of database connections to create when the application server is started.
-#************************************************************************************************
-mxe.db.initialConnections=8
-
-#************************************************************************************************
-#** Maximum number of free database connections available in the connection pool.
-#************************************************************************************************
-mxe.db.maxFreeConnections=8
-
-#************************************************************************************************
-#** Minimum number of free database connections needed in the connection pool in
-#** order for more connections to be allocated.
-#************************************************************************************************
-mxe.db.minFreeConnections=5
-
-#************************************************************************************************
-#** Number of new connections to be created when the minimum free connections are
-#** available in the connection pool.
-#************************************************************************************************
-mxe.db.newConnectionCount=3
-
-#************************************************************************************************
-#** The system install sets the value to: TRANSACTION_READ_COMMITTED.
-#************************************************************************************************
-mxe.db.transaction_isolation=TRANSACTION_READ_COMMITTED
-
-#************************************************************************************************
-#** This value defines the database uppercase function for the system.
-#************************************************************************************************
-mxe.db.format.upper=UPPER
-
-#************************************************************************************************
-#** This value sets the autocommit mode used for the Write connections. Can be
-#** either true or false. The default is false.
-#************************************************************************************************
-mxe.db.autocommit=0
-
-#************************************************************************************************
-#** System date format.
-#************************************************************************************************
-mxe.db.systemdateformat=current timestamp
-
-#************************************************************************************************
-#** The database-specific format of the null value function.
-#************************************************************************************************
-mxe.db.format.nullvalue=COALESCE
-
-#mxe.crontask.donotrun=ALL
-EOF
-
-}
 
 function configure_maximo_pae_for_was {
 
@@ -332,7 +217,7 @@ function configure_maximo_pae_for_oracle {
   if [ "${MX_DB_SERVICENAME}" != "" ]; then
     ORACLE_DB_URL=jdbc:oracle:thin:@${MX_DB_HOSTNAME}:${MX_DB_PORT}/${MX_DB_SERVICENAME}
   else
-    ORACLE_DB_URL=jdbc:oracle:thin:@${MX_DB_HOSTNAME}:${MX_DB_PORT}/${MX_DB_NAME}
+    ORACLE_DB_URL=jdbc:oracle:thin:@${MX_DB_HOSTNAME}:${MX_DB_PORT}:${MX_DB_NAME}
   fi
 
   cat >> ${MAXIMO_PAE_PROPERTIES} <<EOF
@@ -344,6 +229,20 @@ Database.Oracle.ServerHostName=${MX_DB_HOSTNAME}
 Database.Oracle.ServerPort=${MX_DB_PORT}
 Database.Oracle.InstanceName=${MX_DB_NAME}
 Database.Oracle.ServiceName=${MX_DB_SERVICENAME}
+EOF
+
+}
+
+function configure_maximo_pae_for_sqlserver {
+
+  cat >> ${MAXIMO_PAE_PROPERTIES} <<EOF
+mxe.db.user=${MX_DB_USER}
+mxe.db.password=${MX_DB_PASSWORD}
+mxe.db.schemaowner=${MX_DB_SCHEMA}
+
+Database.SQL.ServerHostName=${MX_DB_HOSTNAME}
+Database.SQL.ServerPort=${MX_DB_PORT}
+Database.SQL.DatabaseName=${MX_DB_NAME}
 EOF
 
 }
@@ -418,12 +317,21 @@ function build_maximo_ear {
 mkdir -p ${MAXIMO_DIR}/properties
 mkdir -p ${MAXIMO_DEPLOY}
 
-cat > ${MAXIMO_PAE_PROPERTIES}
-###################################################
-<<EOF
+cat > ${MAXIMO_PAE_PROPERTIES}<<EOF
+# Maximo PAE Properties
+EOF
+
 
 if [ "${MX_DB_VENDOR}" = "DB2" ]; then
-    configure_maximo_properties_for_db2
+    
+    BLD_DB_SCHEMA=${MX_DB_SCHEMA}
+    BLD_DB_DRIVER=com.ibm.db2.jcc.DB2Driver
+    BLD_DB_SYSTEMDATEFORMAT="current timestamp"
+    BLD_DB_FORMAT_NULLVALUE=COALESCE
+    BLD_DB_URL=jdbc:db2://${MX_DB_HOSTNAME}:${MX_DB_PORT}/${MX_DB_NAME}
+    
+
+    configure_maximo_properties
 
     if [ "${MX_APP_VENDOR}" = "was" ] ; then 
         configure_maximo_pae_for_was
@@ -436,7 +344,19 @@ if [ "${MX_DB_VENDOR}" = "DB2" ]; then
     configure_maximo_pae_for_db2
 
 elif [ "${MX_DB_VENDOR}" = "Oracle" ]; then
-    configure_maximo_properties_for_oracle
+
+    BLD_DB_SCHEMA=${MX_DB_SCHEMA}
+    BLD_DB_DRIVER=oracle.jdbc.OracleDriver
+    BLD_DB_SYSTEMDATEFORMAT=sysdate
+    BLD_DB_FORMAT_NULLVALUE=NVL
+    
+    if [ "${MX_DB_SERVICENAME}" != "" ]; then
+      BLD_DB_URL=jdbc:oracle:thin:@${MX_DB_HOSTNAME}:${MX_DB_PORT}/${MX_DB_SERVICENAME}
+    else
+      BLD_DB_URL=jdbc:oracle:thin:@${MX_DB_HOSTNAME}:${MX_DB_PORT}:${MX_DB_NAME}
+    fi
+
+    configure_maximo_properties
 
     if [ "${MX_APP_VENDOR}" = "was" ] ; then 
         configure_maximo_pae_for_was
@@ -447,6 +367,25 @@ elif [ "${MX_DB_VENDOR}" = "Oracle" ]; then
     fi
     
     configure_maximo_pae_for_oracle
+
+elif [ "${MX_DB_VENDOR}" = "SQLServer" ]; then
+    BLD_DB_SCHEMA=dbo
+    BLD_DB_DRIVER=com.microsoft.sqlserver.jdbc.SQLServerDriver
+    BLD_DB_URL=jdbc:sqlserver://${MX_DB_HOSTNAME}:${MX_DB_PORT};databaseName=${MX_DB_NAME};integratedSecurity=false;
+    BLD_DB_SYSTEMDATEFORMAT=getdate
+    BLD_DB_FORMAT_NULLVALUE=ISNULL
+
+    configure_maximo_properties
+
+        if [ "${MX_APP_VENDOR}" = "was" ] ; then 
+        configure_maximo_pae_for_was
+    elif [ "${MX_APP_VENDOR}" = "liberty" ] ; then    
+        configure_maximo_pae_for_liberty
+    elif [ "${MX_APP_VENDOR}" = "weblogic" ] ; then    
+        configure_maximo_pae_for_weblogic
+    fi
+
+    configure_maximo_pae_for_sqlserver
 fi
 
 explode_customization_classes
